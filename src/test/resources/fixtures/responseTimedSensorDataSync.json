@@ -1,0 +1,1 @@
+{"source":"Sun","sourceId":"1A2B3C","timestamp":12345,"messageType":"response_timed_sensor_data_sync","payload":[{"sensorId":"S1","sensorTimestamp":12345,"sensorValue":"100","sensorType":"ST01"},{"sensorId":"S2","sensorTimestamp":16666,"sensorValue":"200","sensorType":"ST02"}]}

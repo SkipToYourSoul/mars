@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.mars.database.mapper.SensorDataRecordsMapper">
+	<resultMap type="com.zeedoo.mars.domain.SensorDataRecord" id="sensorDataMap">
+	    <result column="id" property="id" />
+	    <result column="sda_sen_id" property="sensorId" />
+	    <result column="sda_timestamp_utc" property="timestamp" />
+	    <result column="sda_value" property="value" />
+	</resultMap>
+	
+	<select id="get" parameterType="map" resultMap="sensorDataMap">
+	     SELECT id, sda_sen_id, sda_timestamp_utc, sda_value FROM sensor_data_records
+	     WHERE sda_sen_id = #{sensorId}	 
+	     <if test="start != null">
+		 AND #{start} &lt;= from_unixtime(sda_timestamp_utc)
+		 </if>
+		 <if test="end != null">
+		 AND from_unixtime(sda_timestamp_utc) &lt;= #{end}
+		 </if>	 
+	</select>
+		
+	<insert id="insert" parameterType="com.zeedoo.mars.domain.SensorDataRecord">
+	    INSERT INTO sensor_data_records (sda_sen_id, sda_timestamp_utc, sda_value)
+	    values
+	    (#{record.sensorId},#{record.timestamp},#{record.value})
+	    <!-- If we happen to have a record for the same timestamp, just update that value -->
+	    ON DUPLICATE KEY UPDATE sda_value = #{record.value}
+	</insert>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM sensor_data_records
+		WHERE sda_sen_id = #{sensorId}
+		<if test="start != null">
+		AND #{start} &lt;= from_unixtime(sda_timestamp_utc)
+		</if>
+		<if test="end != null">
+		AND from_unixtime(sda_timestamp_utc) &lt;= #{end}
+		</if>		 
+	</delete>
+</mapper>
