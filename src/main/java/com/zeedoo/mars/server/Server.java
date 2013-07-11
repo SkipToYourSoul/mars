@@ -14,7 +14,7 @@ public class Server {
 	private int port = 8080; //Default port
 	
 	@Autowired
-	private ServerChannelInitializer serverPipelineFactory;
+	private ServerChannelInitializer serverChannelInitializer;
 	
 	public Server() {}
 	public Server(int port) {
@@ -28,7 +28,7 @@ public class Server {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(bossGroup, workerGroup)
 			 .channel(NioServerSocketChannel.class)
-			 .childHandler(serverPipelineFactory);
+			 .childHandler(serverChannelInitializer);
 			
 			b.bind(port).sync().channel().closeFuture().sync();
 		} finally {
