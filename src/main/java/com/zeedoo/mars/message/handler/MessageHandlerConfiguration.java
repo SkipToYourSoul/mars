@@ -1,31 +1,37 @@
 package com.zeedoo.mars.message.handler;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import com.google.common.collect.Maps;
 import com.zeedoo.mars.message.MessageType;
 
-@Component
+@Configuration
 public class MessageHandlerConfiguration {
-	
+
 	@Autowired
 	private List<MessageHandler> handlers;
-	
-	@Bean
-	public Map<MessageType, MessageHandler> messageTypeToHandlerMap() {
-		final Map<MessageType, MessageHandler> m = Maps.newHashMap();
+
+	private static final Map<MessageType, MessageHandler> MESSAGE_TYPE_TO_HANDLER_MAP = Maps.newHashMap();
+
+	@PostConstruct
+	private void init() {
 		// Initialize map
 		for (MessageHandler handler : handlers) {
-			m.put(handler.getHandledType(), handler);
+			MESSAGE_TYPE_TO_HANDLER_MAP.put(handler.getHandledType(), handler);
 		}
-		return m;
+	}
+	
+	public MessageHandler getMessageHandler(MessageType type) {
+		MessageHandler handler = MESSAGE_TYPE_TO_HANDLER_MAP.get(type);
+		if (handler == null) {
+			throw new IllegalArgumentException("Unsupported Message Type : " + type);
+		}
+		return handler;
 	}
 }
