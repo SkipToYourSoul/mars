@@ -5,6 +5,7 @@
 <configuration>	
     <typeHandlers>
        <typeHandler handler="com.zeedoo.mars.database.mybatis.DateTimeTypeHandler" javaType="org.joda.time.DateTime"/>
+       <typeHandler handler="com.zeedoo.mars.database.mybatis.HasValueEnumTypeHandler" javaType="com.zeedoo.mars.domain.DeviceStatus"/>
     </typeHandlers>
 	
 	<environments default="dev">
@@ -24,6 +25,7 @@
 	</environments>
 
 	<mappers>
+	    <mapper resource="com/zeedoo/mars/db/sensorStatusMapper.xml" />
 	    <mapper resource="com/zeedoo/mars/db/sensorDataRecordsMapper.xml" />
 	    <mapper resource="com/zeedoo/mars/db/sunMapper.xml" />
 	</mappers>

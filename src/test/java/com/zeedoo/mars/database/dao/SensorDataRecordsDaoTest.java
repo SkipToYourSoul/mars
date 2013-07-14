@@ -9,13 +9,13 @@ import org.junit.Test;
 import com.zeedoo.mars.domain.SensorDataRecord;
 import com.zeedoo.mars.utils.DateUtils;
 
-public class SensorDataRecordsTest extends EntityDaoTest {
+public class SensorDataRecordsDaoTest extends EntityDaoTest {
 	
 	private SensorDataRecordsDao sensorDataRecordsDao;
 	
 	private static final String TEST_SENSOR_ID = "fakeSensorId";
 
-	public SensorDataRecordsTest() throws Exception {
+	public SensorDataRecordsDaoTest() throws Exception {
 		super();
 		sensorDataRecordsDao = new SensorDataRecordsDao();
 		sensorDataRecordsDao.setDatabaseService(databaseService);

@@ -10,7 +10,7 @@
 	    <result column="sun_geocode" property="geoCode" />
 	    <result column="sun_location" property="location" />
 	    <result column="sun_wireless_pass" property="wirelessCode" />
-	    <result column="sun_alive_state" property="aliveState" />
+	    <result column="sun_alive_state" property="deviceStatus" />
 	</resultMap>
 	
 	<select id="get" resultMap="sunMap">
@@ -23,14 +23,14 @@
 	    values
 	    (#{sun.sunId},#{sun.sunSsid})
 	</insert>
-
+	
 	<update id="update">
 		UPDATE sun SET
 		  sun_ssid = #{sun.sunSsid},
 		  sun_geocode = #{sun.geoCode},
 		  sun_location = #{sun.location},
 		  sun_wireless_pass = #{sun.wirelessCode},
-		  sun_alive_state = #{sun.aliveState}		  
+		  sun_alive_state = #{sun.deviceStatus.statusCode}		  
 		WHERE sun_id = #{sun.sunId}
 	</update>
 </mapper>

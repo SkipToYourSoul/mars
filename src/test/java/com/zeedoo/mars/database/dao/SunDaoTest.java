@@ -42,7 +42,7 @@ public class SunDaoTest extends EntityDaoTest {
 		sunDao.update(updated);
 		updated = sunDao.get(TEST_SUN_ID);
 		Assert.assertNotNull(updated);
-		Assert.assertEquals(Boolean.FALSE, updated.getDeviceStatus());
+		Assert.assertEquals(DeviceStatus.OFFLINE, updated.getDeviceStatus());
 	}
 
 }

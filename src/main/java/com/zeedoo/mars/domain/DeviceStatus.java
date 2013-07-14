@@ -1,6 +1,6 @@
 package com.zeedoo.mars.domain;
 
-public enum DeviceStatus {
+public enum DeviceStatus implements HasValueEnum {
 
 	ONLINE(1), 
 	OFFLINE(0);
@@ -25,6 +25,11 @@ public enum DeviceStatus {
 			throw new IllegalArgumentException(
 					"Unknown DeviceStatus status code:" + statusCode);
 		}
+	}
+
+	@Override
+	public int getValue() {
+		return this.statusCode;
 	}
 
 }

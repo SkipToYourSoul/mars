@@ -10,21 +10,39 @@ import com.google.common.base.Objects;
 public class SensorStatus {
 	
 	/**
+	 * Internal ID
+	 */
+	String id;
+	
+	/**
 	 * Sensor Id
 	 */
 	String sensorId;
 	
 	/** 
-	 * Human-readable IP / Port of the Sun system that the sensor belongs to
+	 * Human-readable IPv4 Address of the Sun that manages this Sensor
 	 */
-	String sunIp;
+	String sunIpAddress;
 	
-	Integer sunPort;
+	Integer sunIpPort;
+	
+	/**
+	 * MAC address of the Sun that manages this Sensor
+	 */
+	String sunMacAddress;
 	
 	/**
 	 * Device status of this Sensor
 	 */
-	DeviceStatus deviceStatus;
+	DeviceStatus sensorStatus;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getSensorId() {
 		return sensorId;
@@ -34,39 +52,47 @@ public class SensorStatus {
 		this.sensorId = sensorId;
 	}
 
-	public String getSunIp() {
-		return sunIp;
+	public String getSunIpAddress() {
+		return sunIpAddress;
 	}
 
-	public void setSunIp(String sunIp) {
-		this.sunIp = sunIp;
+	public void setSunIpAddress(String sunIpAddress) {
+		this.sunIpAddress = sunIpAddress;
 	}
 
-	public Integer getSunPort() {
-		return sunPort;
+	public Integer getSunIpPort() {
+		return sunIpPort;
 	}
 
-	public void setSunPort(Integer sunPort) {
-		this.sunPort = sunPort;
+	public void setSunIpPort(Integer sunIpPort) {
+		this.sunIpPort = sunIpPort;
 	}
 
-	public DeviceStatus getDeviceStatus() {
-		return deviceStatus;
+	public String getSunMacAddress() {
+		return sunMacAddress;
 	}
 
-	public void setDeviceStatus(DeviceStatus deviceStatus) {
-		this.deviceStatus = deviceStatus;
+	public void setSunMacAddress(String sunMacAddress) {
+		this.sunMacAddress = sunMacAddress;
 	}
 
+	public DeviceStatus getSensorStatus() {
+		return sensorStatus;
+	}
+
+	public void setSensorStatus(DeviceStatus sensorStatus) {
+		this.sensorStatus = sensorStatus;
+	}
+	
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(SensorStatus.class).add("sensorId", sensorId).add("sunIp", sunIp).add("sunPort", sunPort)
-				.add("deviceStatus", deviceStatus).toString();
+		return Objects.toStringHelper(SensorStatus.class).add("id", id).add("sensorId", sensorId).add("sunIpAddress", sunIpAddress).add("sunIpPort", sunIpPort)
+				.add("sunMacAddress", sunMacAddress).add("sensorStatus", sensorStatus).toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(sensorId, sunIp, sunPort, deviceStatus);
+		return Objects.hashCode(id, sensorId, sunIpAddress, sunIpPort, sunMacAddress, sensorStatus);
 	}
 
 	@Override
@@ -78,9 +104,11 @@ public class SensorStatus {
 		if (getClass() != obj.getClass())
 			return false;
 		SensorStatus other = (SensorStatus) obj;
-		return Objects.equal(sensorId, other.sensorId) 
-				&& Objects.equal(sunIp, other.sunIp)
-				&& Objects.equal(sunPort, other.sunPort)
-				&& Objects.equal(deviceStatus, other.deviceStatus);
+		return  Objects.equal(id, other.id)
+				&& Objects.equal(sensorId, other.sensorId) 
+				&& Objects.equal(sunIpAddress, other.sunIpAddress)
+				&& Objects.equal(sunIpPort, other.sunIpPort)
+				&& Objects.equal(sunMacAddress, other.sunMacAddress)
+				&& Objects.equal(sensorStatus, other.sensorStatus);
 	}
 }
