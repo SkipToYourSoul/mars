@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.zeedoo.mars.database.DatabaseService;
 import com.zeedoo.mars.database.mapper.Mapper;
 
-// basic abstract DAO class for entity
+// Basic abstract DAO class for entity
 @Component
 public abstract class EntityDao<M extends Mapper> {
 	

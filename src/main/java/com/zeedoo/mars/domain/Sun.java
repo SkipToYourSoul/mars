@@ -27,11 +27,6 @@ public class Sun {
 	// Sun wireless access code
 	String wirelessCode;
 	
-	// Sun online / offline state
-	// false - offline, true - online
-	// TODO: Make this an enum
-	DeviceStatus deviceStatus;
-
 	public String getId() {
 		return id;
 	}
@@ -80,23 +75,14 @@ public class Sun {
 		this.wirelessCode = wirelessCode;
 	}
 	
-	public DeviceStatus getDeviceStatus() {
-		return deviceStatus;
-	}
-
-	public void setDeviceStatus(DeviceStatus deviceStatus) {
-		this.deviceStatus = deviceStatus;
-	}
-
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("id", id).add("sunId", sunId).add("sunSsid", sunSsid).add("geoCode", geoCode).add("location", location)
-				.add("deviceStatus", deviceStatus).toString();
+		return Objects.toStringHelper(this).add("id", id).add("sunId", sunId).add("sunSsid", sunSsid).add("geoCode", geoCode).add("location", location).toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id, sunId, sunSsid, geoCode, location, deviceStatus, wirelessCode);
+		return Objects.hashCode(id, sunId, sunSsid, geoCode, location, wirelessCode);
 	}
 
 	@Override
@@ -109,7 +95,6 @@ public class Sun {
 			return false;
 		Sun other = (Sun) obj;
 		return Objects.equal(id, other.id) && Objects.equal(sunId, other.sunId) && Objects.equal(geoCode, other.geoCode)
-				&& Objects.equal(location, other.location) && Objects.equal(deviceStatus, other.deviceStatus) 
-				&& Objects.equal(sunSsid, other.sunSsid) && Objects.equal(wirelessCode, other.wirelessCode);
+				&& Objects.equal(location, other.location) && Objects.equal(sunSsid, other.sunSsid) && Objects.equal(wirelessCode, other.wirelessCode);
 	}
 }

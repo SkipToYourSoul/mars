@@ -10,11 +10,10 @@
 	    <result column="sun_geocode" property="geoCode" />
 	    <result column="sun_location" property="location" />
 	    <result column="sun_wireless_pass" property="wirelessCode" />
-	    <result column="sun_alive_state" property="deviceStatus" />
 	</resultMap>
 	
 	<select id="get" resultMap="sunMap">
-	     SELECT id, sun_id, sun_ssid, sun_geocode, sun_location, sun_wireless_pass, sun_alive_state FROM sun
+	     SELECT id, sun_id, sun_ssid, sun_geocode, sun_location, sun_wireless_pass FROM sun
 	     WHERE sun_id = #{sunId}	    
 	</select>
 		
@@ -29,8 +28,7 @@
 		  sun_ssid = #{sun.sunSsid},
 		  sun_geocode = #{sun.geoCode},
 		  sun_location = #{sun.location},
-		  sun_wireless_pass = #{sun.wirelessCode},
-		  sun_alive_state = #{sun.deviceStatus.statusCode}		  
+		  sun_wireless_pass = #{sun.wirelessCode}	  
 		WHERE sun_id = #{sun.sunId}
 	</update>
 </mapper>

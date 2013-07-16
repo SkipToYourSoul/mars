@@ -28,5 +28,6 @@
 	    <mapper resource="com/zeedoo/mars/db/sensorStatusMapper.xml" />
 	    <mapper resource="com/zeedoo/mars/db/sensorDataRecordsMapper.xml" />
 	    <mapper resource="com/zeedoo/mars/db/sunMapper.xml" />
+	    <mapper resource="com/zeedoo/mars/db/sunStatusMapper.xml" />
 	</mappers>
 </configuration>

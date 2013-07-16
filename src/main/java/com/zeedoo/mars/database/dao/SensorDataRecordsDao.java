@@ -18,19 +18,13 @@ public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataRecordsDao.class);
 	
-	// Utility method to insert a list of records
-	public void insertDataRecords(List<SensorDataRecord> records) {
+	// Insert a list of records
+	// Note: This should be the preferred way to insert multiple records for performance reasons
+	@Transactional
+	public int insertDataRecords(List<SensorDataRecord> records) {
 		Preconditions.checkArgument(records != null, "Records should not be null");
-		//Insert record one by one, if there is an exception, we suppress it and disregard it, since it's unlikely that a 
-		//single data record would affect the overall data look. However, we do need to be alerted if there's high number
-		//of failures
-		for (SensorDataRecord record : records) {
-			try {
-                insert(record);
-			} catch (Exception e) {
-				LOGGER.error("Error occured while inserting a record: {}, Skipping SensorDataRecord={}", e, record);
-			}
-		}
+		SensorDataRecordsMapper mapper = getMapper();
+		return mapper.insertDataRecords(records);
 	}
 	
 	@Transactional

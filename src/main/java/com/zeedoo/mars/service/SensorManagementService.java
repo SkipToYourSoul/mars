@@ -1,7 +1,5 @@
 package com.zeedoo.mars.service;
 
-import org.springframework.stereotype.Service;
-
 import com.zeedoo.mars.domain.SensorStatus;
 
 /**
@@ -10,7 +8,6 @@ import com.zeedoo.mars.domain.SensorStatus;
  * @author nzhu
  *
  */
-@Service
 public interface SensorManagementService {
 	
 	/**

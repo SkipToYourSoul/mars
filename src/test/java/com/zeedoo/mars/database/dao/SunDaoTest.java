@@ -24,25 +24,24 @@ public class SunDaoTest extends EntityDaoTest {
 		Assert.assertNotNull(sun);
 		Assert.assertEquals("1", sun.getId());
 		Assert.assertEquals("1A2B3C", sun.getSunSsid());
-		Assert.assertEquals(DeviceStatus.OFFLINE, sun.getDeviceStatus());
 	}
 	
 	@Test
 	public void testUpdate() {
 		Sun sun = sunDao.get(TEST_SUN_ID);
 		Assert.assertNotNull(sun);
-		sun.setDeviceStatus(DeviceStatus.ONLINE);
+		sun.setLocation("Shanghai");
 		sunDao.update(sun);
 		//check value after update
 		Sun updated = sunDao.get(TEST_SUN_ID);
 		Assert.assertNotNull(updated);
-		Assert.assertEquals(DeviceStatus.ONLINE, updated.getDeviceStatus());
+		Assert.assertEquals("Shanghai", sun.getLocation());
 		//revert to original
-		updated.setDeviceStatus(DeviceStatus.OFFLINE);
+		updated.setLocation("Austin");
 		sunDao.update(updated);
 		updated = sunDao.get(TEST_SUN_ID);
 		Assert.assertNotNull(updated);
-		Assert.assertEquals(DeviceStatus.OFFLINE, updated.getDeviceStatus());
+		Assert.assertEquals("Austin", updated.getLocation());
 	}
 
 }

@@ -23,10 +23,20 @@
 		
 	<insert id="insert" parameterType="com.zeedoo.mars.domain.SensorDataRecord">
 	    INSERT INTO sensor_data_records (sda_sen_id, sda_timestamp_utc, sda_value)
-	    values
+	    VALUES
 	    (#{record.sensorId},#{record.timestamp},#{record.value})
 	    <!-- If we happen to have a record for the same timestamp, just update that value -->
 	    ON DUPLICATE KEY UPDATE sda_value = #{record.value}
+	</insert>
+	
+	<insert id="insertDataRecords" parameterType="com.zeedoo.mars.domain.SensorDataRecord">
+	    INSERT INTO sensor_data_records (sda_sen_id, sda_timestamp_utc, sda_value)
+	    VALUES
+	    <foreach item="record" index="index" collection="records" separator=",">
+	        (#{record.sensorId},#{record.timestamp},#{record.value})
+	    </foreach>
+	    <!-- If we happen to have a record for the same timestamp, just update that value -->
+	    ON DUPLICATE KEY UPDATE sda_value = VALUES(sda_value)
 	</insert>
 
 	<delete id="delete" parameterType="map">

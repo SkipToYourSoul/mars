@@ -1,36 +1,57 @@
 package com.zeedoo.mars.service;
 
-import org.springframework.stereotype.Service;
-
+import com.zeedoo.mars.domain.DeviceStatus;
 import com.zeedoo.mars.domain.Sun;
+import com.zeedoo.mars.domain.SunStatus;
 
 /**
  * Service that maintains the states of SUN systems
  *
  */
-@Service
 public interface SunManagementService {
 	
 	/**
-	 * Registers a Sun device to in-memory cache and database
-	 * @param sun
+	 * Returns the current status with given ip address
+	 * @param ipAddress
 	 * @return
 	 */
-	boolean registerSun(Sun sun);
-	
+	SunStatus getSunStatusByIpAddress(String ipAddress);
+
 	/**
-	 * Updates the state of a Sun device in cache as well as database
-	 * @param sunId
-	 * @param currentStatus
-	 * @return
-	 */
-	boolean updateSunDeviceStatus(String sunId, Sun currentSun);
-	
-	/**
-	 * Gets the Sun device from the in-memory cache.
-	 * If not found in cache, retrieve it from the database
+	 * Returns the current status with given SunId
 	 * @param sunId
 	 * @return
 	 */
-	Sun getSun(String sunId);
+	SunStatus getSunStatusBySunId(String sunId);
+	
+	/**
+	 * Business logic when we receive a message from a Sun device
+	 * 
+	 * Binds the current Sun Id with the given Socket Address
+	 * duplicate ip address, update sun id
+	 * duplicate sun id, update ip address
+	 * @param sunStatus
+	 * @return
+	 */
+	boolean onSunMessageReceived(String sunId, String ipAddress);
+
+	/**
+	 * Business logic when sun connection is established
+	 * Inserts socket address / port pair with a null sun id upon connection establishment with a Sun
+	 * This method will set sunId to NULL if socket address / port already exists
+	 * @param ipAddress
+	 * @param port
+	 * @return
+	 */
+	boolean onSunConnectionEstablished(String ipAddress);
+	
+	/**
+	 * Business logic when sun connection is established
+	 * Inserts socket address / port pair with a null sun id upon connection establishment with a Sun
+	 * This method will set sunId to NULL if socket address / port already exists
+	 * @param ipAddress
+	 * @param port
+	 * @return
+	 */
+	boolean onSunConnectionInterrupted(String ipAddress);
 }

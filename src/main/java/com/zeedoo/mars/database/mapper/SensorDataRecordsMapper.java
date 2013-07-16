@@ -15,6 +15,9 @@ public interface SensorDataRecordsMapper extends Mapper {
 	// Insert(update) the sensor data record with the given payload
 	int insert(@Param(value = "record") SensorDataRecord record);
 	
+	// Insert multiple records
+	int insertDataRecords(@Param(value = "records") List<SensorDataRecord> records);
+	
 	// Delete data in the record
 	int delete(@Param(value = "sensorId") String sensorId, 
 			@Param(value = "start") Date start, @Param(value = "end") Date end);	

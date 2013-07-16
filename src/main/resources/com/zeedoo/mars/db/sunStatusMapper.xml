@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zeedoo.mars.database.mapper.SunStatusMapper">
+	<resultMap type="com.zeedoo.mars.domain.SunStatus" id="sunStatusMap">
+	    <result column="id" property="id" />
+	    <result column="sas_sun_id" property="sunId" />
+	    <result column="sas_ip_address" property="sunIpAddress" />
+	    <result column="sas_alive_state" property="sunStatus" />
+	    <result column="sas_last_updated" property="lastUpdated" />
+	</resultMap>
+	
+	<select id="getStatusBySunId" resultMap="sunStatusMap">
+	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_alive_state, sas_last_updated 
+	     FROM sun_alive_status
+	     WHERE sas_sun_id = #{sunId}
+	     <!-- Only get the status with the most recent updated date -->
+	     ORDER BY sas_last_updated DESC	 
+	     LIMIT 1   
+	</select>
+	
+	<select id="getStatusByIpAddress" resultMap="sunStatusMap">
+	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_alive_state, sas_last_updated 
+	     FROM sun_alive_status
+	     WHERE sas_sun_ip_address = INET_ATON(#{ipAddress})	  
+	     <!-- Only get the status with the most recent updated date -->
+	     ORDER BY sas_last_updated DESC	 
+	     LIMIT 1 
+	</select>
+		
+	<insert id="insert">
+	    INSERT INTO sun_alive_status (sas_sun_id, sas_sun_ip_address, sas_sun_alive_state, sas_last_updated)
+	    VALUES
+	    (#{sunStatus.sunId},INET_ATON(#{sunStatus.sunIpAddress}),#{sunStatus.sunStatus}, unix_timestamp(NOW()))
+	</insert>
+	
+	<update id="update">
+	    UPDATE sun_alive_status
+	    SET sas_sun_id = #{sunStatus.sunId},
+	        sas_sun_alive_state = #{sunStatus.sunStatus},
+	        sas_last_updated = unix_timestamp(unix_timestamp(NOW()))
+	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.ipAddress})
+	</update>
+</mapper>
