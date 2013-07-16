@@ -1,10 +1,13 @@
 package com.zeedoo.mars.database.dao;
 
+import org.springframework.stereotype.Component;
+
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.database.aop.Transactional;
 import com.zeedoo.mars.database.mapper.SunStatusMapper;
 import com.zeedoo.mars.domain.SunStatus;
 
+@Component
 public class SunStatusDao extends EntityDao<SunStatusMapper> {
 	
 	@Transactional

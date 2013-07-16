@@ -3,6 +3,8 @@ package com.zeedoo.mars.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
@@ -10,6 +12,7 @@ import com.zeedoo.mars.database.dao.SunStatusDao;
 import com.zeedoo.mars.domain.DeviceStatus;
 import com.zeedoo.mars.domain.SunStatus;
 
+@ManagedResource()
 @Component
 public class SunManagementServiceBean implements SunManagementService {
 	
@@ -17,7 +20,27 @@ public class SunManagementServiceBean implements SunManagementService {
 	private SunStatusDao sunStatusDao;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorManagementServiceBean.class);
-				
+	
+	@ManagedOperation
+	public String querySunStatusByIpAddress(String ipAddress) {
+		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
+		if (status == null) {
+			String result = String.format("Could not find SunStatus by ipAddress=%s", ipAddress);
+			return result;
+		}
+		return status.toString();
+	}
+	
+	@ManagedOperation
+	public String querySunStatusBySunId(String sunId) {
+		SunStatus status = sunStatusDao.getStatusBySunId(sunId);
+		if (status == null) {
+			String result = String.format("Could not find SunStatus by SunId=%s", sunId);
+			return result;
+		}
+		return status.toString();
+	}
+	
 	@Override
 	public SunStatus getSunStatusByIpAddress(String ipAddress) {
 		return sunStatusDao.getStatusByIpAddress(ipAddress);

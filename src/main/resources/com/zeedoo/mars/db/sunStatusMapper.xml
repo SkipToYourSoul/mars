@@ -7,12 +7,12 @@
 	    <result column="id" property="id" />
 	    <result column="sas_sun_id" property="sunId" />
 	    <result column="sas_ip_address" property="sunIpAddress" />
-	    <result column="sas_alive_state" property="sunStatus" />
+	    <result column="sas_sun_alive_state" property="sunStatus" />
 	    <result column="sas_last_updated" property="lastUpdated" />
 	</resultMap>
 	
 	<select id="getStatusBySunId" resultMap="sunStatusMap">
-	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_alive_state, sas_last_updated 
+	     SELECT id, sas_sun_id, INET_NTOA(sas_sun_ip_address) AS sunIpAddress, sas_sun_alive_state, sas_last_updated 
 	     FROM sun_alive_status
 	     WHERE sas_sun_id = #{sunId}
 	     <!-- Only get the status with the most recent updated date -->
