@@ -3,6 +3,7 @@ package com.zeedoo.mars.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
 
@@ -27,6 +28,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 		String rawJsonString = in.readBytes(in.readableBytes()).toString(CharsetUtil.UTF_8);	
 		// De-serialize JSON to Message object
 		Message message = MessageDeserializer.fromJSON(rawJsonString);
+		validateMessage(message);
 		out.add(message);
 	}
 	
@@ -34,5 +36,13 @@ public class MessageDecoder extends ByteToMessageDecoder {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		//TODO: Add exception handling'
 	    LOGGER.error("Error occured", cause);
+	}
+	
+	private void validateMessage(Message message) {
+		// Validate message
+		Preconditions.checkNotNull("Source should not be null", message.getSource());
+		Preconditions.checkNotNull("SourceId should not be null", message.getSourceId());
+		Preconditions.checkNotNull("Timestamp should not be null", message.getTimestamp());
+		Preconditions.checkNotNull("MessageType should not be null", message.getMessageType());
 	}
 }

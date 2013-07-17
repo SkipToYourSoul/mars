@@ -39,7 +39,7 @@
 	    UPDATE sun_alive_status
 	    SET sas_sun_id = #{sunStatus.sunId},
 	        sas_sun_alive_state = #{sunStatus.sunStatus},
-	        sas_last_updated = unix_timestamp(unix_timestamp(NOW()))
-	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.ipAddress})
+	        sas_last_updated = unix_timestamp(NOW())
+	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.sunIpAddress})
 	</update>
 </mapper>

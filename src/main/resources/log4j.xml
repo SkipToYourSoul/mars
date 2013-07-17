@@ -18,10 +18,23 @@
       <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %m%n"/> 
     </layout> 
   </appender> 
+  
+  <appender name="Error" class="org.apache.log4j.RollingFileAppender"> 
+    <param name="file" value="errors.log"/>
+    <param name="threshold" value="ERROR" />
+    <param name="MaxFileSize" value="100KB"/>
+    <!-- Keep one backup file -->
+    <param name="MaxBackupIndex" value="1"/>
+    <layout class="org.apache.log4j.PatternLayout"> 
+      <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %m%n"/> 
+    </layout> 
+  </appender>
+  
   <root> 
     <!-- Set root logger level to DEBUG and its only appender to A1 -->
-    <priority value ="DEBUG" /> 
+    <priority value ="INFO" /> 
     <appender-ref ref="Stdout" />
     <appender-ref ref="File" />  
+    <appender-ref ref="Error" />
   </root>
 </log4j:configuration>

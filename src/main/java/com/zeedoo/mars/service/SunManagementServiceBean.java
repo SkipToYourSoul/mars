@@ -52,39 +52,47 @@ public class SunManagementServiceBean implements SunManagementService {
 	}
 	
 	@Override
-	public boolean onSunConnectionEstablished(String ipAddress) {
+	public void onSunConnectionEstablished(String ipAddress) {
 		SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.ONLINE);
-		if (mergeSunStatus(newStatus) == false) {
-			LOGGER.error("Failed to set new SunStatus={} for ipAddress = {}", newStatus, ipAddress);
-			return false;
-		}
-		return true;
+		LOGGER.info("OnSunConnectionEstablisehd: Setting SunStatus={} for ipAddress={}", newStatus, ipAddress);
+		mergeSunStatus(newStatus);
 	}
 	
 	@Override
-	public boolean onSunConnectionInterrupted(String ipAddress) {
-		SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.OFFLINE);
-		if (mergeSunStatus(newStatus) == false) {
-			LOGGER.error("Failed to set new SunStatus={} for ipAddress = {}", newStatus, ipAddress);
-			return false;
+	public void onSunConnectionInterrupted(String ipAddress) {
+		// Try to get the existing status first
+		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
+		if (status == null) {
+			SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.OFFLINE);
+			LOGGER.warn("Could not find existing SunStatus with ipAddress={}, inserting new entry={}", ipAddress, newStatus);
+			sunStatusDao.insert(newStatus);
+		} else {
+			//simply update the device status
+			status.setSunStatus(DeviceStatus.OFFLINE);
+			LOGGER.info("Updating SunStatus={}", status);
+			sunStatusDao.update(status);
 		}
-		return true;
 	}
 	
 	@Override
-	public boolean onSunMessageReceived(String sunId, String ipAddress) {
+	public void onSunMessageReceived(String sunId, String ipAddress) {
 		// Set sunId for this ip address regardless if we have done it previously or not
-		SunStatus newStatus = new SunStatus(ipAddress, sunId, DeviceStatus.ONLINE);
-		if (mergeSunStatus(newStatus) == false) {
-			LOGGER.error("Failed to set new SunStatus={} for ipAddress = {}", newStatus, ipAddress);
-			return false;
+		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
+		if (status == null) {
+			SunStatus newStatus = new SunStatus(ipAddress, sunId, DeviceStatus.ONLINE);
+			LOGGER.warn("Could not find existing SunStatus with ipAddress={}, inserting new entry={}", ipAddress, newStatus);
+			sunStatusDao.insert(newStatus);
+		} else {
+			// simply update the device status
+			status.setSunId(sunId);
+			LOGGER.info("Updating SunStatus={}", status);
+			sunStatusDao.update(status);
 		}
-		return true;
 	}
 		
 	// Merge a Sun status
 	// Update first, if update doesn't return a result, do an insert
-	private boolean mergeSunStatus(SunStatus sunStatus) {
+	private void mergeSunStatus(SunStatus sunStatus) {
 		Preconditions.checkNotNull(sunStatus, "sunStatus should not be null");
 		Preconditions.checkNotNull(sunStatus.getSunIpAddress(), "sunIpAddress should not be null");
 		Preconditions.checkNotNull(sunStatus.getSunStatus(), "sunStatus should not have a null device status");
@@ -93,7 +101,5 @@ public class SunManagementServiceBean implements SunManagementService {
 			LOGGER.debug("SunStatus={} does not exist in database, inserting new entry", sunStatus);
 			result = sunStatusDao.insert(sunStatus);
 		}
-		return (result != 0);
 	}
-
 }
