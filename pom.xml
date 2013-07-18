@@ -9,7 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<netty.version>4.0.0.CR9</netty.version>
+		<netty.version>4.0.0.Final</netty.version>
 		<spring.version>3.2.3.RELEASE</spring.version>
 	</properties>
 

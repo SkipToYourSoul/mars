@@ -2,11 +2,9 @@ package com.zeedoo.mars.server.handler;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.MessageList;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -26,7 +24,7 @@ import com.zeedoo.mars.task.SensorDataSyncTask;
 
 @Sharable
 @Component
-public class InboundSunMessageHandler extends ChannelInboundHandlerAdapter {
+public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Message> {
 	
 	@Autowired
 	private MessageHandlerConfiguration messageHandlerConfiguration;
@@ -40,30 +38,34 @@ public class InboundSunMessageHandler extends ChannelInboundHandlerAdapter {
 	/** Connection establishment / interruption **/
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		LOGGER.info("Established Connection with Sun SocketAddress={}, Channel Id={}", ctx.channel().remoteAddress(), ctx.channel().id());
+		LOGGER.info("Established Connection with Sun SocketAddress={}", ctx.channel().remoteAddress());
 		String sunIpAddress = getRemoteIpAddress(ctx);
 		sunManagementService.onSunConnectionEstablished(sunIpAddress);
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		LOGGER.info("Lost Connection with Sun IPAddress={}, ChannelId={}", ctx.channel().remoteAddress(), ctx.channel().id());
+		LOGGER.info("Lost Connection with Sun SocketAddress={}", ctx.channel().remoteAddress());
 		String sunIpAddress = getRemoteIpAddress(ctx);
 		sunManagementService.onSunConnectionInterrupted(sunIpAddress);
 	}
 
 	/** Message processing **/
 	@Override
-	public void messageReceived(ChannelHandlerContext ctx,
-			MessageList<Object> requests) throws Exception {
-		// cast to String
-		MessageList<Message> messages = requests.cast();
-		LOGGER.info("Processing MessageList of size={}", messages.size());
-		processMessages(messages, ctx);
-		// IMPORTAT - Netty needs this
-		messages.releaseAllAndRecycle();
+	public void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+		Preconditions.checkNotNull("Message should not be null", message);
+		LOGGER.info("Received Message={}",message.toString());
+		String sunIpAddress = getRemoteIpAddress(ctx);
+		// We will do a DB call per message here since the load should be relatively light
+		sunManagementService.onSunMessageReceived(message.getSourceId(), sunIpAddress);
+		doProcessMessage(message, ctx);
 	}
-
+	
+	@Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
+    }
+	
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
 			throws Exception {
@@ -79,30 +81,21 @@ public class InboundSunMessageHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 	
-	/** Error handling **/
+	/** Error handling 
+	 *  The overall principle is as a service, we shouldn't close the connection unless something terrible has happened
+	 *  Service should be error-tolerant, and it's up to client's responsibility to retry
+	 *  However, if the error occurred when we were trying to reply back to Sun, we should retry a few number of times 
+	 */
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		cause.printStackTrace();
-		//FIXME: We need to suppress and log most exceptions, for rare unrecoverables, we should close connection
-		//ctx.close();
+		LOGGER.error("An exception has occured", cause);
 	}
 	
 	private String getRemoteIpAddress(ChannelHandlerContext ctx) {
 		Preconditions.checkNotNull("ChannelHandlerContext should not be null", ctx);
 		InetSocketAddress socketAddress = (InetSocketAddress)ctx.channel().remoteAddress();
 		return socketAddress.getAddress().getHostAddress();
-	}
-	
-	private void processMessages(MessageList<Message> messages, ChannelHandlerContext ctx) throws Exception {
-		String sunIpAddress = getRemoteIpAddress(ctx);
-		for (int i = 0; i < messages.size(); i++) {
-			Message message = messages.get(i);
-			LOGGER.info("Received Message={}",message.toString());
-			// We will do a DB call per message here since most of the time there should be only one message
-			sunManagementService.onSunMessageReceived(message.getSourceId(), sunIpAddress);
-			doProcessMessage(message, ctx);
-		}
 	}
 	
 	private void doProcessMessage(Message msg, ChannelHandlerContext ctx) {

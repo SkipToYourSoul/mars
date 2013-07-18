@@ -34,7 +34,7 @@ public abstract class DataSyncTask implements Runnable {
 		}
 		// Check channel open status
 		if (!ctx.channel().isOpen()) {
-			LOGGER.info("Channel = {} is NOT open. Closing channel...", ctx.channel().id());
+			LOGGER.info("Channel(remoteAddress={}) is NOT open. Closing channel...", ctx.channel().remoteAddress());
 			ctx.channel().close();
 		}
 		LOGGER.info("DataSyncTask = {} triggered as scheduled", getTaskName());
