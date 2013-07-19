@@ -19,5 +19,4 @@ public class ResponseTimedSensorDataSyncMessageHandler extends AbstractMessageHa
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

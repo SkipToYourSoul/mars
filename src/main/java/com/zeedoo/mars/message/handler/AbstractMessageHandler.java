@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.netty.channel.ChannelHandlerContext;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageGateway;
 import com.zeedoo.mars.message.MessageType;
@@ -20,6 +21,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 
 	@Override
 	public void handleMessage(Message message, ChannelHandlerContext ctx) {
+		Preconditions.checkArgument(message != null, "Message should not be null.");
 		Optional<Message> replyMessage = doHandleMessage(message, ctx);
 		if (replyMessage.isPresent()) {
 			LOGGER.info("Reply message is present for Message source id: " + message.getSourceId());
@@ -31,7 +33,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 	public MessageType getHandledType() {
 		throw new UnsupportedOperationException("Not supported");
 	}
-	
+
 	/**
 	 * Do the real processing of the message, and return a reply message if necessary
 	 * @param message

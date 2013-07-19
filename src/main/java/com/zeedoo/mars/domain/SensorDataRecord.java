@@ -23,6 +23,16 @@ public class SensorDataRecord {
 	
 	//Value of the recording
 	String value;
+	
+	public SensorDataRecord() {
+		//
+	}
+	
+	public SensorDataRecord(String sensorId, DateTime timestamp, String value) {
+		this.sensorId = sensorId;
+		this.timestamp = timestamp;
+		this.value = value;
+	}
 
 	public String getId() {
 		return id;
