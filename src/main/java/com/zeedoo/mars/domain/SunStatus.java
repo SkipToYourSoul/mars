@@ -2,6 +2,7 @@ package com.zeedoo.mars.domain;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 
 import com.google.common.base.Objects;
 
@@ -71,12 +72,12 @@ public class SunStatus {
 		return lastUpdated;
 	}
 	
-	public DateTime getLastUpdatedUTC() {
-		return lastUpdated.withZone(DateTimeZone.UTC);
-	}
-
 	public void setLastUpdated(DateTime lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+	
+	public DateTime getLastUpdatedLocal() {
+		return lastUpdated == null ? null : lastUpdated.toDateTime(DateTimeZone.getDefault());
 	}
 
 	@Override

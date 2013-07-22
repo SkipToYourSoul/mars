@@ -89,7 +89,7 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		LOGGER.error("An exception has occured", cause);
+		LOGGER.error("Exception thrown", cause);
 	}
 	
 	private String getRemoteIpAddress(ChannelHandlerContext ctx) {
@@ -98,7 +98,7 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 		return socketAddress.getAddress().getHostAddress();
 	}
 	
-	private void doProcessMessage(Message msg, ChannelHandlerContext ctx) {
+	private void doProcessMessage(Message msg, ChannelHandlerContext ctx) throws Exception {
 		// Get handler, and process the message
 		MessageHandler handler = messageHandlerConfiguration.getMessageHandler(msg.getMessageType());
 		handler.handleMessage(msg, ctx);

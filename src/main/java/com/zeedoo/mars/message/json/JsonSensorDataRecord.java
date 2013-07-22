@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class JsonSensorDataRecord {
+	
 	@JsonProperty
 	private String sensorId;
 	

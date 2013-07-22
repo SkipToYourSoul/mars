@@ -35,7 +35,7 @@ public class DatabaseService {
 	    InputStream inputStream = Resources.getResourceAsStream(MYBATIS_CONFIG_FILE);
 	    sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, environment);
 	    sqlSessionManager = SqlSessionManager.newInstance(sqlSessionFactory);
-	    LOGGER.info("Successfully created DatabaseService");
+	    LOGGER.debug("DatabaseService bean created");
 	}
     
 	public SqlSessionFactory getSessionFactory() {

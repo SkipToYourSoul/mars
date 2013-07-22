@@ -1,0 +1,1 @@
+{"source":"Sun","sourceId":"1A2B3C","timestamp":12345,"messageType":"sensor_alive_status","payload":[{"sensorId":"S1","sensorSunIpPort":"192.168.1.1:8080","sensorSunMac":"02:f8:47:16:49:72","sensorState":"1"},{"sensorId":"S2","sensorSunIpPort":"192.168.1.1:8080","sensorSunMac":"02:f8:47:16:49:72","sensorState":"0"}]}

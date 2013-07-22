@@ -1,7 +1,5 @@
 package com.zeedoo.mars.service;
 
-import com.zeedoo.mars.domain.DeviceStatus;
-import com.zeedoo.mars.domain.Sun;
 import com.zeedoo.mars.domain.SunStatus;
 
 /**

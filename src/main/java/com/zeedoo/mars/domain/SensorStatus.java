@@ -36,6 +36,18 @@ public class SensorStatus {
 	 */
 	DeviceStatus sensorStatus;
 	
+	public SensorStatus() {
+		// hmm
+	}
+	
+	public SensorStatus(String sensorId, String sunIpAddress, Integer sunIpPort, String sunMacAddress, DeviceStatus sensorStatus) {
+		this.sensorId = sensorId;
+		this.sunIpAddress = sunIpAddress;
+		this.sunIpPort = sunIpPort;
+		this.sunMacAddress = sunMacAddress;
+		this.sensorStatus = sensorStatus;
+	}
+	
 	public String getId() {
 		return id;
 	}

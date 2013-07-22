@@ -32,14 +32,14 @@
 	<insert id="insert">
 	    INSERT INTO sun_alive_status (sas_sun_id, sas_sun_ip_address, sas_sun_alive_state, sas_last_updated)
 	    VALUES
-	    (#{sunStatus.sunId},INET_ATON(#{sunStatus.sunIpAddress}),#{sunStatus.sunStatus}, unix_timestamp(NOW()))
+	    (#{sunStatus.sunId},INET_ATON(#{sunStatus.sunIpAddress}),#{sunStatus.sunStatus}, unix_timestamp(LOCALTIMESTAMP()))
 	</insert>
 	
 	<update id="update">
 	    UPDATE sun_alive_status
 	    SET sas_sun_id = #{sunStatus.sunId},
 	        sas_sun_alive_state = #{sunStatus.sunStatus},
-	        sas_last_updated = unix_timestamp(NOW())
+	        sas_last_updated = unix_timestamp(LOCALTIMESTAMP())
 	    WHERE sas_sun_ip_address = INET_ATON(#{sunStatus.sunIpAddress})
 	</update>
 </mapper>

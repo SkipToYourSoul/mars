@@ -1,5 +1,6 @@
 package com.zeedoo.mars.message;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
 
@@ -33,7 +34,7 @@ public class Message {
 	/**
 	 * Payload of the message (if applicable)
 	 */
-	private JsonNode payload;
+	private Object payload;
 	
 	/**
 	 * Response code (if applicable)
@@ -93,15 +94,24 @@ public class Message {
 		this.sourceId = sourceId;
 	}
 	
-	public JsonNode getPayload() {
+	public Object getPayload() {
 		return payload;
 	}
-
+	
 	/** Jackson deserializes this field to a JsonNode **/
 	public void setPayload(JsonNode payload) {
 		this.payload = payload;
 	}
 	
+	/** 
+	 * Use this method to get the raw JSON payload for deserialization 
+	 * Won't be used during serialization
+	 **/
+	@JsonIgnore
+	public String getPayloadAsRawJson() {
+		return payload == null ? null : payload.toString();
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(source, sourceId, messageType, payload, responseCode, errorMessage);

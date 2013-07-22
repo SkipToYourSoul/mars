@@ -14,7 +14,7 @@ public class MessageGatewayBean implements MessageGateway {
 	@Override
 	public void sendMessage(Message message, ChannelHandlerContext ctx) {
 		LOGGER.info("Sending Outbound Message={}", message);
-		ctx.write(message);
+		ctx.writeAndFlush(message);
 	}
 
 }

@@ -16,7 +16,7 @@ public interface MessageHandler {
      * The original message to handle
      * @param message
      */
-	void handleMessage(Message message, ChannelHandlerContext ctx);
+	void handleMessage(Message message, ChannelHandlerContext ctx) throws Exception;
 	
 	/**
 	 * Returns the type this handler handles

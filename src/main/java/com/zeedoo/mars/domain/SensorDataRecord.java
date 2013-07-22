@@ -49,6 +49,10 @@ public class SensorDataRecord {
 	public void setSensorId(String sensorId) {
 		this.sensorId = sensorId;
 	}
+	
+	public DateTime getTimestampLocal() {
+		return timestamp.withZone(DateTimeZone.getDefault());
+	}
 
 	public DateTime getTimestamp() {
 		return timestamp;
@@ -68,8 +72,7 @@ public class SensorDataRecord {
 
 	@Override
 	public String toString() {
-		DateTime localTimeStamp = timestamp.withZone(DateTimeZone.getDefault());
-		return Objects.toStringHelper(this).add("id", id).add("sensorId", sensorId).add("timestamp", localTimeStamp)
+		return Objects.toStringHelper(this).add("id", id).add("sensorId", sensorId).add("timestamp", getTimestampLocal())
 				.add("value", value).toString();
 	}
 
