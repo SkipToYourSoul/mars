@@ -19,7 +19,6 @@ import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.handler.MessageHandler;
 import com.zeedoo.mars.message.handler.MessageHandlerConfiguration;
 import com.zeedoo.mars.service.SunManagementService;
-import com.zeedoo.mars.task.LocationDataSyncTask;
 import com.zeedoo.mars.task.SensorDataSyncTask;
 
 @Sharable
@@ -41,6 +40,8 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 		LOGGER.info("Established Connection with Sun SocketAddress={}", ctx.channel().remoteAddress());
 		String sunIpAddress = getRemoteIpAddress(ctx);
 		sunManagementService.onSunConnectionEstablished(sunIpAddress);
+		LOGGER.info("Initiating DataSync tasks...");
+		initDataSyncTasks(ctx);
 	}
 
 	@Override
@@ -107,7 +108,5 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	private void initDataSyncTasks(ChannelHandlerContext ctx) {
 		ctx.channel().eventLoop()
 				.schedule(new SensorDataSyncTask(ctx), 10, TimeUnit.SECONDS);
-		ctx.channel().eventLoop()
-				.schedule(new LocationDataSyncTask(ctx), 20, TimeUnit.SECONDS);
 	}
 }

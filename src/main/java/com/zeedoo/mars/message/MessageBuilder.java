@@ -33,7 +33,7 @@ public class MessageBuilder {
 		Message message = new Message();
 		message.setSource(SOURCE);
 		message.setSourceId(SOURCE_ID);
-		message.setTimestamp(new DateTime().getMillis());
-		return new Message();
+		message.setTimestamp(new DateTime().getMillis() / 1000L);
+		return message;
 	}
 }

@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum MessageType {
 	
 	RESPONSE_TIMED_SENSOR_DATA_SYNC("response_timed_sensor_data_sync"),
+	TIMED_SENSOR_DATA_SYNC("timed_sensor_data_sync"),
+	
 	INSTANT_SENSOR_DATA_SYNC("insant_sensor_data_sync"),
 	SENSOR_ALIVE_STATUS("sensor_alive_status"),
 	HANDSHAKE("handshake");

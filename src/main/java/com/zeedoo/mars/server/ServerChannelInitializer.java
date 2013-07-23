@@ -59,6 +59,7 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
 		// and then business logic
 		pipeline.addLast("messageDecoder", new MessageDecoder());
+		pipeline.addLast("messageEncoder", new MessageEncoder());
 		
 		if (skipHandshake) {
 			LOGGER.info("Handshake on initial connection is DISABLED. Skipping adding handshake handler");

@@ -39,7 +39,6 @@ public class InstantSensorDataSyncMessageHandler extends AbstractMessageHandler 
 		int result = sensorDataRecordsDao.insertDataRecords(records);
 		LOGGER.info("Inserted/updated {} sensor data records", result);
 		// We do not need to reply to this message
-		throw new IllegalStateException("TEST ExCEPTION");
-		//return Optional.<Message>absent();
+		return Optional.<Message>absent();
 	}
 }
