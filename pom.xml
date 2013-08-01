@@ -11,6 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<netty.version>4.0.1.Final</netty.version>
 		<spring.version>3.2.3.RELEASE</spring.version>
+		<zeedoo.commons.version>0.1-SNAPSHOT</zeedoo.commons.version>
 	</properties>
 
 	<repositories>
@@ -26,9 +27,20 @@
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>${netty.version}</version>
-			<scope>compile</scope>
 		</dependency>
-
+		
+		<!-- Zeedoo core domain -->
+        <dependency>
+            <groupId>com.zeedoo</groupId>
+            <artifactId>zeedoo-commons</artifactId>
+            <version>${zeedoo.commons.version}</version>
+            <exclusions>
+               <exclusion>
+                  <groupId>org.springframework</groupId>
+			      <artifactId>spring-context</artifactId>
+               </exclusion>
+            </exclusions>
+        </dependency>
 
 		<!-- Spring -->
 		<dependency>
@@ -58,12 +70,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.1.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.25</version>
@@ -80,25 +86,7 @@
 			<artifactId>jsr250-api</artifactId>
 			<version>1.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>14.0</version>
-		</dependency>
-		
+				
 		<!-- Jackson -->
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -117,13 +105,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.2.0</version>
         </dependency>
-		
-		<!-- MX4J -->
-		<dependency>
-			<groupId>mx4j</groupId>
-			<artifactId>mx4j-tools</artifactId>
-			<version>3.0.1</version>
-		</dependency>
 
 		<!-- Test -->
 		<dependency>

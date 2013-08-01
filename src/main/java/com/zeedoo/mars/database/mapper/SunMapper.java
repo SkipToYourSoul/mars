@@ -2,7 +2,7 @@ package com.zeedoo.mars.database.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.mars.domain.Sun;
+import com.zeedoo.commons.domain.Sun;
 
 /**
  * MyBatis mapper to interact with dbo.Sun

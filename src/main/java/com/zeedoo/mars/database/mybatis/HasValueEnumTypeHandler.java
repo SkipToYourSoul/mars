@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
-import com.zeedoo.mars.domain.HasValueEnum;
+import com.zeedoo.commons.mybatis.HasValueEnum;
 
 public class HasValueEnumTypeHandler<E extends Enum<E> & HasValueEnum> extends BaseTypeHandler<E> {
 

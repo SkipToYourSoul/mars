@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.zeedoo.mars.domain.DeviceStatus;
-import com.zeedoo.mars.domain.SensorDataRecord;
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.DeviceStatus;
+import com.zeedoo.commons.domain.SensorDataRecord;
+import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.mars.message.json.JsonSensorAliveStatus;
 import com.zeedoo.mars.message.json.JsonSensorDataRecord;
 

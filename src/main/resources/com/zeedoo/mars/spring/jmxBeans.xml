@@ -49,7 +49,7 @@
 		<!-- let the HttpAdapter be started after it is registered in the MBeanServer -->
 		<property name="listeners">
 			<list>
-				<bean class="com.zeedoo.mars.jmx.HttpAdaptorMgr">
+				<bean class="com.zeedoo.commons.jmx.HttpAdaptorMgr">
 					<property name="mbeanServer" ref="mbeanServer" />
 				</bean>
 			</list>

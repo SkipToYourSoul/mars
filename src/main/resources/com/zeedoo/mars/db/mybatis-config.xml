@@ -4,8 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>	
     <typeHandlers>
-       <typeHandler handler="com.zeedoo.mars.database.mybatis.DateTimeTypeHandler" javaType="org.joda.time.DateTime"/>
-       <typeHandler handler="com.zeedoo.mars.database.mybatis.HasValueEnumTypeHandler" javaType="com.zeedoo.mars.domain.DeviceStatus"/>
+       <typeHandler handler="com.zeedoo.commons.mybatis.DateTimeTypeHandler" javaType="org.joda.time.DateTime"/>
+       <typeHandler handler="com.zeedoo.commons.mybatis.HasValueEnumTypeHandler" javaType="com.zeedoo.commons.domain.DeviceStatus"/>
     </typeHandlers>
 	
 	<environments default="dev">

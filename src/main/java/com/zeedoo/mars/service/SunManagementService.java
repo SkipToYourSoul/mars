@@ -1,6 +1,6 @@
 package com.zeedoo.mars.service;
 
-import com.zeedoo.mars.domain.SunStatus;
+import com.zeedoo.commons.domain.SunStatus;
 
 /**
  * Service that maintains the states of SUN systems

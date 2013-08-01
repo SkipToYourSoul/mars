@@ -2,9 +2,9 @@ package com.zeedoo.mars.database.dao;
 
 import org.springframework.stereotype.Component;
 
+import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.mars.database.aop.Transactional;
 import com.zeedoo.mars.database.mapper.SensorStatusMapper;
-import com.zeedoo.mars.domain.SensorStatus;
 
 @Component
 public class SensorStatusDao extends EntityDao<SensorStatusMapper> {

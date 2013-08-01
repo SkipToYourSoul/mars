@@ -3,8 +3,7 @@ package com.zeedoo.mars.database.dao;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.zeedoo.mars.domain.DeviceStatus;
-import com.zeedoo.mars.domain.Sun;
+import com.zeedoo.commons.domain.Sun;
 
 public class SunDaoTest extends EntityDaoTest {
 	

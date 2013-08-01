@@ -32,7 +32,7 @@
   
   <root> 
     <!-- Set root logger level to DEBUG and its only appender to A1 -->
-    <priority value ="INFO" /> 
+    <priority value ="DEBUG" /> 
     <appender-ref ref="Stdout" />
     <appender-ref ref="File" />  
     <appender-ref ref="Error" />

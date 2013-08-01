@@ -1,22 +1,21 @@
 package com.zeedoo.mars.message;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.zeedoo.mars.domain.SensorDataRecord;
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.SensorDataRecord;
+import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.mars.message.json.JsonSensorDataRecord;
 
 

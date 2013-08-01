@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.mars.domain.SensorDataRecord;
+import com.zeedoo.commons.domain.SensorDataRecord;
 
 public interface SensorDataRecordsMapper extends Mapper {
 	

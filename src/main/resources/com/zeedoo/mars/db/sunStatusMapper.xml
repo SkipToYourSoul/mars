@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zeedoo.mars.database.mapper.SunStatusMapper">
-	<resultMap type="com.zeedoo.mars.domain.SunStatus" id="sunStatusMap">
+	<resultMap type="com.zeedoo.commons.domain.SunStatus" id="sunStatusMap">
 	    <result column="id" property="id" />
 	    <result column="sas_sun_id" property="sunId" />
 	    <result column="sas_ip_address" property="sunIpAddress" />

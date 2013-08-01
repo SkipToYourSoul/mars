@@ -5,17 +5,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import io.netty.channel.ChannelHandlerContext;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.database.dao.SensorStatusDao;
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
 import com.zeedoo.mars.message.MessageType;
 
+@Component
 public class SensorAliveStatusMessageHandler extends AbstractMessageHandler {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorAliveStatusMessageHandler.class);
@@ -31,9 +33,12 @@ public class SensorAliveStatusMessageHandler extends AbstractMessageHandler {
 		List<SensorStatus> statusList = MessageDeserializer.deserializeSensorAliveStatusPayload(message.getPayloadAsRawJson());
 		int affectedRecords = 0;
 		for (SensorStatus status : statusList) {
-			// do an update and check if status already exists
-			int result = sensorStatusDao.update(status);
-			if (result == 0) {
+			// check if sensor status already exists
+			SensorStatus existingStatus = sensorStatusDao.get(status.getSensorId());
+			int result = 0;
+			if (existingStatus != null) {
+				result = sensorStatusDao.update(status);
+			} else {
 				result = sensorStatusDao.insert(status);
 			}
 			affectedRecords += result;

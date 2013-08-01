@@ -3,8 +3,8 @@ package com.zeedoo.mars.database.dao;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.zeedoo.mars.domain.DeviceStatus;
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.DeviceStatus;
+import com.zeedoo.commons.domain.SensorStatus;
 
 public class SensorStatusDaoTest extends EntityDaoTest {
 

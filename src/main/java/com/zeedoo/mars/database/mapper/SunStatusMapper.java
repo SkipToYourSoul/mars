@@ -2,7 +2,7 @@ package com.zeedoo.mars.database.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.mars.domain.SunStatus;
+import com.zeedoo.commons.domain.SunStatus;
 
 /**
  * myBatis mapper to interact with dbo.sun_alive_state

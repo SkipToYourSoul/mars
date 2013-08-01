@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.database.dao.SensorDataRecordsDao;
-import com.zeedoo.mars.domain.SensorDataRecord;
+import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
 import com.zeedoo.mars.message.MessageType;

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.zeedoo.mars.database.dao.SensorStatusDao;
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.SensorStatus;
 
 @ManagedResource()
 @Component

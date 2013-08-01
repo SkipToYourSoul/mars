@@ -1,6 +1,6 @@
 package com.zeedoo.mars.service;
 
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.SensorStatus;
 
 /**
  * 

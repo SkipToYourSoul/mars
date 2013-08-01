@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zeedoo.mars.database.mapper.SensorDataRecordsMapper">
-	<resultMap type="com.zeedoo.mars.domain.SensorDataRecord" id="sensorDataMap">
+	<resultMap type="com.zeedoo.commons.domain.SensorDataRecord" id="sensorDataMap">
 	    <result column="id" property="id" />
 	    <result column="sda_sen_id" property="sensorId" />
 	    <result column="sda_timestamp_utc" property="timestamp" />
@@ -21,7 +21,7 @@
 		 </if>	 
 	</select>
 		
-	<insert id="insert" parameterType="com.zeedoo.mars.domain.SensorDataRecord">
+	<insert id="insert" parameterType="com.zeedoo.commons.domain.SensorDataRecord">
 	    INSERT INTO sensor_data_records (sda_sen_id, sda_timestamp_utc, sda_value)
 	    VALUES
 	    (#{record.sensorId},#{record.timestamp},#{record.value})
@@ -29,7 +29,7 @@
 	    ON DUPLICATE KEY UPDATE sda_value = #{record.value}
 	</insert>
 	
-	<insert id="insertDataRecords" parameterType="com.zeedoo.mars.domain.SensorDataRecord">
+	<insert id="insertDataRecords" parameterType="com.zeedoo.commons.domain.SensorDataRecord">
 	    INSERT INTO sensor_data_records (sda_sen_id, sda_timestamp_utc, sda_value)
 	    VALUES
 	    <foreach item="record" index="index" collection="records" separator=",">

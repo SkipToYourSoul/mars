@@ -1,12 +1,11 @@
 package com.zeedoo.mars.task;
 
-import java.util.concurrent.TimeUnit;
-
 import io.netty.channel.ChannelHandlerContext;
+
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Optional;

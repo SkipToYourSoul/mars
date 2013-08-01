@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.net.InetAddresses;
-import com.zeedoo.mars.domain.DeviceStatus;
-import com.zeedoo.mars.domain.SunStatus;
+import com.zeedoo.commons.domain.DeviceStatus;
+import com.zeedoo.commons.domain.SunStatus;
 
 public class SunStatusDaoTest extends EntityDaoTest {
 	

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.mars.database.aop.Transactional;
 import com.zeedoo.mars.database.mapper.SensorDataRecordsMapper;
-import com.zeedoo.mars.domain.SensorDataRecord;
 
 @Component
 public class SensorDataRecordsDao extends EntityDao<SensorDataRecordsMapper> {

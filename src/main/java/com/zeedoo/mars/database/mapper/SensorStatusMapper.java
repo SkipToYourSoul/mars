@@ -2,7 +2,7 @@ package com.zeedoo.mars.database.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.zeedoo.mars.domain.SensorStatus;
+import com.zeedoo.commons.domain.SensorStatus;
 
 /**
  * myBatis mapper for Sensor Staus

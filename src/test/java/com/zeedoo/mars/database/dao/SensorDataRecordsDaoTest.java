@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.zeedoo.mars.domain.SensorDataRecord;
+import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.mars.utils.DateUtils;
 
 public class SensorDataRecordsDaoTest extends EntityDaoTest {
