@@ -29,7 +29,7 @@
 			<version>${netty.version}</version>
 		</dependency>
 		
-		<!-- Zeedoo core domain -->
+		<!-- Zeedoo commons -->
         <dependency>
             <groupId>com.zeedoo</groupId>
             <artifactId>zeedoo-commons</artifactId>
