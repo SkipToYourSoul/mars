@@ -1,8 +1,15 @@
 package com.zeedoo.mars.database.dao;
 
+import java.net.URI;
+
+import javax.ws.rs.core.UriBuilder;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SensorStatus;
+import com.zeedoo.mars.api.CoreApiClient;
 import com.zeedoo.mars.database.aop.Transactional;
 import com.zeedoo.mars.database.mapper.SensorStatusMapper;
 
@@ -11,8 +18,10 @@ public class SensorStatusDao extends EntityDao<SensorStatusMapper> {
 	
 	@Transactional
 	public SensorStatus get(String sensorId) {
-		SensorStatusMapper mapper = getMapper();
-		return mapper.get(sensorId);
+		//SensorStatusMapper mapper = getMapper();
+		//return mapper.get(sensorId);
+		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).path(sensorId).build();
+		return (SensorStatus) coreApiClient.get(uri.toASCIIString(), SensorStatus.class);
 	}
 	
 	@Transactional
