@@ -35,13 +35,15 @@ public class SensorAliveStatusMessageHandler extends AbstractMessageHandler {
 		for (SensorStatus status : statusList) {
 			// check if sensor status already exists
 			SensorStatus existingStatus = sensorStatusDao.get(status.getSensorId());
-			int result = 0;
+			SensorStatus updatedStatus = null;
 			if (existingStatus != null) {
-				result = sensorStatusDao.update(status);
+				updatedStatus = sensorStatusDao.update(status);
 			} else {
-				result = sensorStatusDao.insert(status);
+				updatedStatus = sensorStatusDao.insert(status);
 			}
-			affectedRecords += result;
+			if (updatedStatus != null) {
+				affectedRecords++;
+			}
 		}
 		LOGGER.debug("Inserted/updated {} sensor alive status records", affectedRecords);
 		return Optional.<Message>absent();

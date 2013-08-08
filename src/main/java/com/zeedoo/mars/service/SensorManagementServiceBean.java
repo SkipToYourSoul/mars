@@ -52,14 +52,17 @@ public class SensorManagementServiceBean implements SensorManagementService {
 		Preconditions.checkNotNull(sensorId, "current sensorId should not be null");
 		Preconditions.checkNotNull(currentSensorStatus, "current sensorStatus should not be null");
 		// Update database
-		int result = sensorStatusDao.update(currentSensorStatus);
-		if (result == 0) {
+		SensorStatus existingStatus = sensorStatusDao.get(sensorId);
+		SensorStatus updatedStatus = null;
+		if (existingStatus == null) {
 			LOGGER.info("Given sensorId={} currently does not exist in database, inserting a new entry with payload={}", sensorId, currentSensorStatus);
+			updatedStatus = sensorStatusDao.insert(currentSensorStatus);
+		} else {
+			updatedStatus = sensorStatusDao.update(currentSensorStatus);
 		}
-		result = sensorStatusDao.insert(currentSensorStatus);
 		// Update cache
 		cache.put(sensorId, currentSensorStatus);
-		return (result != 0);
+		return updatedStatus != null;
 	}
 
 	@Override

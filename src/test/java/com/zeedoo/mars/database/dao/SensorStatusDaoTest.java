@@ -31,11 +31,11 @@ public class SensorStatusDaoTest extends EntityDaoTest {
 	public void testInsert() throws Exception {	
 		SensorStatus status = getSampleSensorStatus();
 		status.setSensorId("fakeSensorId2");
-		int result = sensorStatusDao.insert(status);
-		Assert.assertEquals(1, result);
+		SensorStatus created = sensorStatusDao.insert(status);
+		Assert.assertNotNull(created);
 		//clean up
-		result = sensorStatusDao.delete("fakeSensorId2");
-		Assert.assertEquals(1, result);
+		boolean result = sensorStatusDao.delete("fakeSensorId2");
+		Assert.assertTrue(result);
 	}
 	
 	@Test

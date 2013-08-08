@@ -21,15 +21,15 @@ public class CoreApiClient {
 	}
 	
 	//TODO: Make it extend Entity
-	public <T extends Object> Object get(String url, Class<T> clazz) {
+	public <T extends Object> T get(String url, Class<T> clazz) {
 		return webResource.path(url).accept(MediaType.APPLICATION_JSON).get(clazz);
 	}
 	
-	public <T extends Object> Object put(String url, Class<T> clazz, Object entity) {
+	public <T extends Object> T put(String url, Class<T> clazz, Object entity) {
 		return webResource.path(url).type(MediaType.APPLICATION_JSON).put(clazz, entity);
 	}
 	
-	public <T extends Object> Object post(String url, Class<T> clazz, Object entity) {
+	public <T extends Object> T post(String url, Class<T> clazz, Object entity) {
 		return webResource.path(url).type(MediaType.APPLICATION_JSON).post(clazz, entity);
 	}
 	
