@@ -19,7 +19,7 @@ public class SunManagementServiceBean implements SunManagementService {
 	@Autowired
 	private SunStatusDao sunStatusDao;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SensorManagementServiceBean.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SunManagementServiceBean.class);
 	
 	@ManagedOperation
 	public String querySunStatusByIpAddress(String ipAddress) {

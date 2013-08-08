@@ -19,34 +19,41 @@ import com.zeedoo.mars.message.MessageType;
 
 @Component
 public class SensorAliveStatusMessageHandler extends AbstractMessageHandler {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorAliveStatusMessageHandler.class);
-	
+
 	@Autowired
 	private SensorStatusDao sensorStatusDao;
 
 	@Override
-	protected Optional<Message> doHandleMessage(Message message,
-			ChannelHandlerContext ctx) throws Exception {
+	protected Optional<Message> doHandleMessage(Message message, ChannelHandlerContext ctx) throws Exception {
 		LOGGER.info("Handling Message={}", message);
 		Preconditions.checkArgument(message.getPayload() != null, "Payload should not be null");
 		List<SensorStatus> statusList = MessageDeserializer.deserializeSensorAliveStatusPayload(message.getPayloadAsRawJson());
 		int affectedRecords = 0;
 		for (SensorStatus status : statusList) {
 			// check if sensor status already exists
-			SensorStatus existingStatus = sensorStatusDao.get(status.getSensorId());
-			SensorStatus updatedStatus = null;
-			if (existingStatus != null) {
-				updatedStatus = sensorStatusDao.update(status);
-			} else {
-				updatedStatus = sensorStatusDao.insert(status);
-			}
+			SensorStatus updatedStatus = updateOrCreateSensorStatus(status);
 			if (updatedStatus != null) {
 				affectedRecords++;
+			} else {
+				LOGGER.warn("Failed to update/create status for sensorId={}", status.getSensorId());
 			}
 		}
 		LOGGER.debug("Inserted/updated {} sensor alive status records", affectedRecords);
-		return Optional.<Message>absent();
+		return Optional.<Message> absent();
+	}
+
+	private SensorStatus updateOrCreateSensorStatus(SensorStatus currentStatus) {
+		// check if sensor status already exists
+		SensorStatus existingStatus = sensorStatusDao.get(currentStatus.getSensorId());
+		SensorStatus updatedStatus = null;
+		if (existingStatus != null) {
+			updatedStatus = sensorStatusDao.update(currentStatus);
+		} else {
+			updatedStatus = sensorStatusDao.insert(currentStatus);
+		}
+		return updatedStatus;
 	}
 
 	@Override
