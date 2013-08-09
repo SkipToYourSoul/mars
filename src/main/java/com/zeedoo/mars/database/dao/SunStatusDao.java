@@ -2,6 +2,7 @@ package com.zeedoo.mars.database.dao;
 
 import java.net.URI;
 
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SunStatus;
 import com.zeedoo.mars.database.aop.Transactional;
@@ -20,9 +22,10 @@ public class SunStatusDao extends EntityDao {
 	
 	@Transactional
 	public SunStatus getStatusBySunId(String sunId) {
-		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(CoreApiPath.FIND_BY_SUN_ID.getPath())
-				.queryParam("sunId", sunId).build();
-		SunStatus result = coreApiClient.get(uri.toASCIIString(), SunStatus.class);
+		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(CoreApiPath.FIND_BY_SUN_ID.getPath()).build();
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+		params.add("sunId", sunId);
+		SunStatus result = coreApiClient.getWithQueryParams(uri.toASCIIString(), SunStatus.class, params);
 		if (result == null) {
 			LOGGER.warn("Could not find SunStatus with sunId={}, returning null", sunId);
 		}

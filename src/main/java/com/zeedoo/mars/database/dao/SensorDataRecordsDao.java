@@ -3,6 +3,7 @@ package com.zeedoo.mars.database.dao;
 import java.net.URI;
 import java.util.Collections;import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 
 import org.joda.time.DateTime;
@@ -14,6 +15,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.commons.domain.SensorDataRecords;
@@ -44,13 +46,15 @@ public class SensorDataRecordsDao extends EntityDao {
 	public List<SensorDataRecord> get(String sensorId, DateTime start, DateTime end) {
 		Preconditions.checkArgument(sensorId != null, "Sensor Id should not be null");
 		UriBuilder uriBuilder = UriBuilder.fromPath(CoreApiPath.SENSOR_DATA.getPath()).path(sensorId);
+		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		if (start != null) {
-			uriBuilder = uriBuilder.queryParam("startDate", start);
+			params.add("startDate", start.toString());
 		}
 		if (end != null) {
-			uriBuilder = uriBuilder.queryParam("endDate", end);
+			params.add("endDate", end.toString());
 		}
-        SensorDataRecords records = coreApiClient.get(uriBuilder.build().toString(), SensorDataRecords.class);
+		SensorDataRecords records = coreApiClient.getWithQueryParams(uriBuilder.build().toString(), SensorDataRecords.class, params);
+        //SensorDataRecords records = coreApiClient.get(uriBuilder.build().toString(), SensorDataRecords.class);
         if (records == null || records.getSensorDataRecords() == null || records.getSensorDataRecords().isEmpty()) {
         	LOGGER.warn("Could NOT find any records with sensorId={}, startDate={}, endDate={}. Returning empty list", new Object[]{sensorId, start, end});
         	return Collections.emptyList();

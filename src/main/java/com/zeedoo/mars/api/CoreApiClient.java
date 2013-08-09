@@ -1,6 +1,9 @@
 package com.zeedoo.mars.api;
 
+import java.util.Map;
+
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -23,6 +26,10 @@ public class CoreApiClient {
 	//TODO: Make it extend Entity
 	public <T extends Object> T get(String url, Class<T> clazz) {
 		return webResource.path(url).accept(MediaType.APPLICATION_JSON).get(clazz);
+	}
+	
+	public <T extends Object> T getWithQueryParams(String url, Class<T> clazz, MultivaluedMap<String, String> queryParams) {
+		return webResource.path(url).queryParams(queryParams).accept(MediaType.APPLICATION_JSON).get(clazz);
 	}
 	
 	public <T extends Object> T put(String url, Class<T> clazz, Object entity) {
