@@ -36,8 +36,9 @@ public class InstantSensorDataSyncMessageHandler extends AbstractMessageHandler 
 		Preconditions.checkArgument(message.getPayload() != null, "Payload should NOT be null");
 		List<SensorDataRecord> records = MessageDeserializer.deserializeSensorDataSyncPayload(message.getPayloadAsRawJson());
 		LOGGER.info("Message payload successfully deserialized and converted into a list of SensorDataRecords of size={}", records.size());
-		int result = sensorDataRecordsDao.insertDataRecords(records);
-		LOGGER.info("Inserted/updated {} sensor data records", result);
+		// Do the database update
+		sensorDataRecordsDao.insertDataRecords(records);
+		LOGGER.info("Inserted/updated {} sensor data records", records.size());
 		// We do not need to reply to this message
 		return Optional.<Message>absent();
 	}

@@ -35,8 +35,9 @@ public class ResponseTimedSensorDataSyncMessageHandler extends AbstractMessageHa
 		Preconditions.checkArgument(message.getPayload() != null, "Payload should NOT be null");
 		List<SensorDataRecord> records = MessageDeserializer.deserializeSensorDataSyncPayload(message.getPayloadAsRawJson());
 		LOGGER.info("Message payload successfully deserialized and converted into a list of SensorDataRecords of size={}", records.size());
-		int result = sensorDataRecordsDao.insertDataRecords(records);
-		LOGGER.debug("Inserted/updated {} sensor data records", result);
+		// Do the database update
+		sensorDataRecordsDao.insertDataRecords(records);
+		LOGGER.info("Inserted/updated {} sensor data records", records.size());
 		return Optional.<Message>absent();
 	}
 }
