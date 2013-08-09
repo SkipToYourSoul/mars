@@ -7,10 +7,9 @@ import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Preconditions;
-import com.zeedoo.mars.database.dao.SunStatusDao;
 import com.zeedoo.commons.domain.DeviceStatus;
 import com.zeedoo.commons.domain.SunStatus;
+import com.zeedoo.mars.database.dao.SunStatusDao;
 
 @ManagedResource()
 @Component
@@ -40,22 +39,18 @@ public class SunManagementServiceBean implements SunManagementService {
 		}
 		return status.toString();
 	}
-	
-	@Override
-	public SunStatus getSunStatusByIpAddress(String ipAddress) {
-		return sunStatusDao.getStatusByIpAddress(ipAddress);
-	}
-	
-	@Override
-	public SunStatus getSunStatusBySunId(String sunId) {
-		return sunStatusDao.getStatusBySunId(sunId);
-	}
-	
+		
 	@Override
 	public void onSunConnectionEstablished(String ipAddress) {
 		SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.ONLINE);
 		LOGGER.info("OnSunConnectionEstablisehd: Setting SunStatus={} for ipAddress={}", newStatus, ipAddress);
-		mergeSunStatus(newStatus);
+		SunStatus existingStatus = sunStatusDao.getStatusByIpAddress(ipAddress);
+		if (existingStatus == null) {
+			LOGGER.info("Could not find SunStatus with ipAddress={}, inserting a new SunStatus", ipAddress);
+			sunStatusDao.insert(newStatus);
+		} else {
+			sunStatusDao.update(newStatus);
+		}
 	}
 	
 	@Override
@@ -87,19 +82,6 @@ public class SunManagementServiceBean implements SunManagementService {
 			status.setSunId(sunId);
 			LOGGER.info("Updating SunStatus={}", status);
 			sunStatusDao.update(status);
-		}
-	}
-		
-	// Merge a Sun status
-	// Update first, if update doesn't return a result, do an insert
-	private void mergeSunStatus(SunStatus sunStatus) {
-		Preconditions.checkNotNull(sunStatus, "sunStatus should not be null");
-		Preconditions.checkNotNull(sunStatus.getSunIpAddress(), "sunIpAddress should not be null");
-		Preconditions.checkNotNull(sunStatus.getSunStatus(), "sunStatus should not have a null device status");
-		int result = sunStatusDao.update(sunStatus);
-		if (result == 0) {
-			LOGGER.debug("SunStatus={} does not exist in database, inserting new entry", sunStatus);
-			result = sunStatusDao.insert(sunStatus);
 		}
 	}
 }

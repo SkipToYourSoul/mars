@@ -5,11 +5,10 @@ import org.springframework.stereotype.Component;
 
 import com.zeedoo.mars.api.CoreApiClient;
 import com.zeedoo.mars.database.DatabaseService;
-import com.zeedoo.mars.database.mapper.Mapper;
 
 // Basic abstract DAO class for entity
 @Component
-public abstract class EntityDao<M extends Mapper> {
+public abstract class EntityDao {
 	
 	@Autowired
 	protected CoreApiClient coreApiClient;
@@ -24,7 +23,4 @@ public abstract class EntityDao<M extends Mapper> {
 	public void setCoreApiClient(CoreApiClient coreApiClient) {
 		this.coreApiClient = coreApiClient;
 	}
-	
-	protected abstract M getMapper();
-
 }

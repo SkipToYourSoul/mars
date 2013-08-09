@@ -18,8 +18,10 @@ public class SunStatusDaoTest extends EntityDaoTest {
 		super();
 		sunStatusDao = new SunStatusDao();
 		sunStatusDao.setDatabaseService(databaseService);
+		sunStatusDao.setCoreApiClient(coreApiClient);
 	}
 	
+	@Test
 	public void testUpdate() {
 		String fakeId = UUID.randomUUID().toString();
 		SunStatus newStatus = new SunStatus("198.84.173.33", null, DeviceStatus.OFFLINE);
@@ -40,8 +42,8 @@ public class SunStatusDaoTest extends EntityDaoTest {
 		String fakeId = UUID.randomUUID().toString();
 		String fakeIpAddress = InetAddresses.fromInteger(new Random().nextInt()).getHostAddress();
 		SunStatus status = new SunStatus(fakeIpAddress, fakeId, DeviceStatus.ONLINE);
-		int result = sunStatusDao.insert(status);
-		Assert.assertTrue(result != 0);
+		SunStatus newStatus = sunStatusDao.insert(status);
+		Assert.assertNotNull(newStatus);
 		// GET the object we just created
 		status = sunStatusDao.getStatusByIpAddress(fakeIpAddress);
 		Assert.assertNotNull(status);

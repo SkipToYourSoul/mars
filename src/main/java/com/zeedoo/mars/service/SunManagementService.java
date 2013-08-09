@@ -1,26 +1,11 @@
 package com.zeedoo.mars.service;
 
-import com.zeedoo.commons.domain.SunStatus;
 
 /**
  * Service that maintains the states of SUN systems
  *
  */
 public interface SunManagementService {
-	
-	/**
-	 * Returns the current status with given ip address
-	 * @param ipAddress
-	 * @return
-	 */
-	SunStatus getSunStatusByIpAddress(String ipAddress);
-
-	/**
-	 * Returns the current status with given SunId
-	 * @param sunId
-	 * @return
-	 */
-	SunStatus getSunStatusBySunId(String sunId);
 	
 	/**
 	 * Business logic when we receive a message from a Sun device
