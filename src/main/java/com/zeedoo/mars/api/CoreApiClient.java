@@ -1,7 +1,5 @@
 package com.zeedoo.mars.api;
 
-import java.util.Map;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 

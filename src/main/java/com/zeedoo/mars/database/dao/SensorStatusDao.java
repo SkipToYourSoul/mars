@@ -12,14 +12,12 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SensorStatus;
-import com.zeedoo.mars.database.aop.Transactional;
 
 @Component
 public class SensorStatusDao extends EntityDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorStatusDao.class);
 	
-	@Transactional
 	public SensorStatus get(String sensorId) {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).path(sensorId).build();
 		SensorStatus result = coreApiClient.get(uri.toASCIIString(), SensorStatus.class);
@@ -28,8 +26,7 @@ public class SensorStatusDao extends EntityDao {
 		}
 		return result;
 	}
-	
-	@Transactional
+
 	public SensorStatus update(SensorStatus sensorStatus) {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).path(sensorStatus.getSensorId()).build();
 		SensorStatus result = coreApiClient.put(uri.toASCIIString(), SensorStatus.class, sensorStatus);
@@ -39,13 +36,11 @@ public class SensorStatusDao extends EntityDao {
 		return result;
 	}
 	
-	@Transactional
 	public SensorStatus insert(SensorStatus sensorStatus) {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).build();
 		return coreApiClient.post(uri.toASCIIString(), SensorStatus.class, sensorStatus);
 	}
 	
-	@Transactional
 	public boolean delete(String sensorId) {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_STATUS.getPath()).path(sensorId).build();
 		ClientResponse response = coreApiClient.delete(uri.toASCIIString());

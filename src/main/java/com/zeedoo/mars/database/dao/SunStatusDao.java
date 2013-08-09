@@ -13,14 +13,12 @@ import com.google.common.base.Preconditions;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SunStatus;
-import com.zeedoo.mars.database.aop.Transactional;
 
 @Component
 public class SunStatusDao extends EntityDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SunStatusDao.class);
 	
-	@Transactional
 	public SunStatus getStatusBySunId(String sunId) {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(CoreApiPath.FIND_BY_SUN_ID.getPath()).build();
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
@@ -32,7 +30,6 @@ public class SunStatusDao extends EntityDao {
 		return result;
 	}
 	
-	@Transactional
 	public SunStatus getStatusByIpAddress(String ipAddress) {
 		Preconditions.checkNotNull("IP address should not be null", ipAddress);
 		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(ipAddress).build();
@@ -43,7 +40,6 @@ public class SunStatusDao extends EntityDao {
 		return result;
 	}
 	
-	@Transactional
 	public SunStatus insert(SunStatus sunStatus) {
 		Preconditions.checkNotNull(sunStatus);
 		Preconditions.checkNotNull("IP address should not be null", sunStatus.getSunIpAddress());
@@ -51,7 +47,6 @@ public class SunStatusDao extends EntityDao {
 		return coreApiClient.post(uri.toASCIIString(), SunStatus.class, sunStatus);
 	}
 	
-	@Transactional
 	public SunStatus update(SunStatus sunStatus) {
 		Preconditions.checkNotNull(sunStatus);
 		Preconditions.checkNotNull("IP address should not be null", sunStatus.getSunIpAddress());

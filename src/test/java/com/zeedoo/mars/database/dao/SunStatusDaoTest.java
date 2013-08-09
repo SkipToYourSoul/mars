@@ -17,7 +17,6 @@ public class SunStatusDaoTest extends EntityDaoTest {
 	public SunStatusDaoTest() throws Exception {
 		super();
 		sunStatusDao = new SunStatusDao();
-		sunStatusDao.setDatabaseService(databaseService);
 		sunStatusDao.setCoreApiClient(coreApiClient);
 	}
 	
@@ -48,5 +47,8 @@ public class SunStatusDaoTest extends EntityDaoTest {
 		status = sunStatusDao.getStatusByIpAddress(fakeIpAddress);
 		Assert.assertNotNull(status);
 		Assert.assertEquals(fakeId, status.getSunId());
+		// Try getting by sunId
+		status = sunStatusDao.getStatusBySunId(fakeId);
+		Assert.assertNotNull(status);
 	}
 }

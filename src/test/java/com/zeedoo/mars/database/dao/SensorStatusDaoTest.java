@@ -15,7 +15,6 @@ public class SensorStatusDaoTest extends EntityDaoTest {
 	public SensorStatusDaoTest() throws Exception {
 		super();
 		sensorStatusDao = new SensorStatusDao();
-		sensorStatusDao.setDatabaseService(databaseService);
 		sensorStatusDao.setCoreApiClient(coreApiClient);
 	}
 

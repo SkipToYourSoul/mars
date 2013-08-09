@@ -1,7 +1,8 @@
 package com.zeedoo.mars.database.dao;
 
 import java.net.URI;
-import java.util.Collections;import java.util.List;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
@@ -19,7 +20,6 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.zeedoo.commons.api.CoreApiPath;
 import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.commons.domain.SensorDataRecords;
-import com.zeedoo.mars.database.aop.Transactional;
 
 @Component
 public class SensorDataRecordsDao extends EntityDao {
@@ -28,7 +28,6 @@ public class SensorDataRecordsDao extends EntityDao {
 	
 	// Insert a list of records
 	// Note: This should be the preferred way to insert multiple records for performance reasons
-	@Transactional
 	public void insertDataRecords(List<SensorDataRecord> records) {
 		Preconditions.checkArgument(records != null, "Records should not be null");
 		URI uri = UriBuilder.fromPath(CoreApiPath.SENSOR_DATA.getPath()).build();
@@ -42,7 +41,6 @@ public class SensorDataRecordsDao extends EntityDao {
 		}
 	}
 	
-	@Transactional
 	public List<SensorDataRecord> get(String sensorId, DateTime start, DateTime end) {
 		Preconditions.checkArgument(sensorId != null, "Sensor Id should not be null");
 		UriBuilder uriBuilder = UriBuilder.fromPath(CoreApiPath.SENSOR_DATA.getPath()).path(sensorId);
@@ -62,7 +60,6 @@ public class SensorDataRecordsDao extends EntityDao {
 		return records.getSensorDataRecords();
 	}
 	
-	@Transactional
 	public void insert(SensorDataRecord record) {
 		Preconditions.checkArgument(record != null, "Record should not be null");
 		List<SensorDataRecord> singleRecord = Lists.newArrayList(record);
@@ -78,7 +75,6 @@ public class SensorDataRecordsDao extends EntityDao {
 	}
 	
 	// For testing purposes
-	@Transactional
 	public int delete(String sensorId, DateTime start, DateTime end) {
     	//Preconditions.checkArgument(sensorId != null, "Sensor Id should not be null");
     	//Date startDate = start != null? start.toDate() : null;
