@@ -19,26 +19,6 @@ public class SunManagementServiceBean implements SunManagementService {
 	private SunStatusDao sunStatusDao;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SunManagementServiceBean.class);
-	
-	@ManagedOperation
-	public String querySunStatusByIpAddress(String ipAddress) {
-		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
-		if (status == null) {
-			String result = String.format("Could not find SunStatus by ipAddress=%s", ipAddress);
-			return result;
-		}
-		return status.toString();
-	}
-	
-	@ManagedOperation
-	public String querySunStatusBySunId(String sunId) {
-		SunStatus status = sunStatusDao.getStatusBySunId(sunId);
-		if (status == null) {
-			String result = String.format("Could not find SunStatus by SunId=%s", sunId);
-			return result;
-		}
-		return status.toString();
-	}
 		
 	@Override
 	public void onSunConnectionEstablished(String ipAddress) {
