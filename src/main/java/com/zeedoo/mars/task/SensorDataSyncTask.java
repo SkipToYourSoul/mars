@@ -15,7 +15,7 @@ import com.zeedoo.mars.message.MessageGateway;
 import com.zeedoo.mars.message.MessageGatewayBean;
 import com.zeedoo.mars.message.MessageType;
 
-public class SensorDataSyncTask extends DataSyncTask {
+public class SensorDataSyncTask extends TimedTask {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataSyncTask.class);
 	
@@ -56,6 +56,12 @@ public class SensorDataSyncTask extends DataSyncTask {
 	protected void scheduleNextRun() {
 		//TODO: The delay will become dynamic
 		ctx.channel().eventLoop().schedule(this, 10, TimeUnit.SECONDS);
+	}
+
+	// Disable the sensor data sync task for now
+	@Override
+	public boolean isEnabled() {
+		return false;
 	}
 
 
