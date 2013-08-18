@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
+import com.zeedoo.mars.task.TimedTask;
 
 /**
  * Decodes bytestream into {@link com.zeedoo.mars.message.Message} object

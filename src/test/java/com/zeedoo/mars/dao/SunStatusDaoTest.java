@@ -1,4 +1,4 @@
-package com.zeedoo.mars.database.dao;
+package com.zeedoo.mars.dao;
 
 import java.util.Random;
 import java.util.UUID;
@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.google.common.net.InetAddresses;
 import com.zeedoo.commons.domain.DeviceStatus;
 import com.zeedoo.commons.domain.SunStatus;
+import com.zeedoo.mars.dao.SunStatusDao;
 
 public class SunStatusDaoTest extends EntityDaoTest {
 	

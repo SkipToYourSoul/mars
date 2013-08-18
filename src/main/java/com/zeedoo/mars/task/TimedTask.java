@@ -16,6 +16,7 @@ public abstract class TimedTask implements Runnable {
 	
 	public TimedTask(ChannelHandlerContext ctx) {
 		this.ctx = ctx;
+		this.setDefaultEnabledStatus();
 	}
 	
 	public void setEnabled(boolean isEnabled) {
@@ -24,7 +25,7 @@ public abstract class TimedTask implements Runnable {
 	
 	@Override
 	public void run() {
-		if (!isEnabled()) {
+		if (!isEnabled) {
 			LOGGER.info("{} is disabled. Skipping...", getTaskName());
 		}
 		// Check channel open status
@@ -36,12 +37,11 @@ public abstract class TimedTask implements Runnable {
 		performTask();
 	}
 	
+	protected abstract void setDefaultEnabledStatus();
+	
 	protected abstract void scheduleNextRun();
 	
 	protected abstract void performTask();
-	
-	/** Controls whether the task is enabled or not */
-	public abstract boolean isEnabled();
 	
 	public abstract String getTaskName();
 }

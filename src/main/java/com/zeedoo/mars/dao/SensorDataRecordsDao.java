@@ -1,4 +1,4 @@
-package com.zeedoo.mars.database.dao;
+package com.zeedoo.mars.dao;
 
 import java.net.URI;
 import java.util.Collections;

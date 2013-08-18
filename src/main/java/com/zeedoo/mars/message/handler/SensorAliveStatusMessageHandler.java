@@ -11,7 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.zeedoo.mars.database.dao.SensorStatusDao;
+import com.zeedoo.mars.dao.SensorStatusDao;
 import com.zeedoo.commons.domain.SensorStatus;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;

@@ -58,11 +58,9 @@ public class SensorDataSyncTask extends TimedTask {
 		ctx.channel().eventLoop().schedule(this, 10, TimeUnit.SECONDS);
 	}
 
-	// Disable the sensor data sync task for now
 	@Override
-	public boolean isEnabled() {
-		return false;
+	protected void setDefaultEnabledStatus() {
+		isEnabled = false;
+		LOGGER.info("Set {} default enabled status to FALSE", this.getClass().getSimpleName());
 	}
-
-
 }

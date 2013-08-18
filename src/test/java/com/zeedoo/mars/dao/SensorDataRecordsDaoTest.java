@@ -1,12 +1,15 @@
-package com.zeedoo.mars.database.dao;
+package com.zeedoo.mars.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.zeedoo.commons.domain.SensorDataRecord;
+import com.zeedoo.mars.dao.SensorDataRecordsDao;
 import com.zeedoo.mars.utils.DateUtils;
 
 public class SensorDataRecordsDaoTest extends EntityDaoTest {
@@ -33,14 +36,13 @@ public class SensorDataRecordsDaoTest extends EntityDaoTest {
 	@Test
 	public void testInsert() throws Exception {
 		List<SensorDataRecord> list = new ArrayList<SensorDataRecord>();
-		for (int i = 0; i < 20; i++) {
+		DateTime baseDateTime = DateUtils.nowDateUTC();
+		for (int i = 0; i < 100; i++) {
 			SensorDataRecord record = new SensorDataRecord();
 			record.setSensorId("fakeSensorId");
-			record.setTimestamp(DateUtils.nowDateUTC());
-			record.setValue(String.valueOf(i));
+			record.setTimestamp(baseDateTime.plusMinutes(i));
+			record.setValue("" + new Random().nextInt(100));
 			list.add(record);
-			// sleep for a short while
-			Thread.sleep(100);
 		}
 		sensorDataRecordsDao.insertDataRecords(list);
 	}

@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<netty.version>4.0.1.Final</netty.version>
 		<spring.version>3.2.3.RELEASE</spring.version>
-		<zeedoo.commons.version>0.11-SNAPSHOT</zeedoo.commons.version>
+		<zeedoo.commons.version>0.12-SNAPSHOT</zeedoo.commons.version>
 	</properties>
 
 	<repositories>

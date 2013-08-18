@@ -1,4 +1,4 @@
-package com.zeedoo.mars.database.dao;
+package com.zeedoo.mars.dao;
 
 import com.zeedoo.mars.api.CoreApiClient;
 

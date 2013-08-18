@@ -1,4 +1,4 @@
-package com.zeedoo.mars.database.dao;
+package com.zeedoo.mars.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

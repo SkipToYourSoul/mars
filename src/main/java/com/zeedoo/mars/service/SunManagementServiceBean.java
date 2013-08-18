@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.zeedoo.commons.domain.DeviceStatus;
 import com.zeedoo.commons.domain.SunStatus;
-import com.zeedoo.mars.database.dao.SunStatusDao;
+import com.zeedoo.mars.dao.SunStatusDao;
 
 @ManagedResource()
 @Component
