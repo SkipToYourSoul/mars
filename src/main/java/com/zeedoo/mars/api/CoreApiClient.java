@@ -5,6 +5,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.zeedoo.commons.hmac.HmacClientFilter;
 
@@ -23,7 +24,13 @@ public class CoreApiClient {
 	
 	//TODO: Make it extend Entity
 	public <T extends Object> T get(String url, Class<T> clazz) {
-		return webResource.path(url).accept(MediaType.APPLICATION_JSON).get(clazz);
+		ClientResponse response = webResource.path(url).accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+		// We need to gracefully handle NOT_FOUNDs, eg. returning a NULL object instead of throwing a client error.
+		if (Status.NOT_FOUND == response.getClientResponseStatus()) {
+			return null;
+		} else {
+			return response.getEntity(clazz);
+		}
 	}
 	
 	public <T extends Object> T getWithQueryParams(String url, Class<T> clazz, MultivaluedMap<String, String> queryParams) {

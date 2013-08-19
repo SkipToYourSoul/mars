@@ -23,7 +23,7 @@ public class SensorDataSyncTask extends TimedTask {
 	
 	// Task is not a Spring bean so we have to manually create an instance hre
 	private final MessageGateway messageGateway = new MessageGatewayBean();
-	
+		
 	public SensorDataSyncTask(ChannelHandlerContext ctx) {
 		super(ctx);
 	}
@@ -60,7 +60,7 @@ public class SensorDataSyncTask extends TimedTask {
 
 	@Override
 	protected void setDefaultEnabledStatus() {
-		isEnabled = false;
-		LOGGER.info("Set {} default enabled status to FALSE", this.getClass().getSimpleName());
+		LOGGER.info("Setting task={} enabledStatus to FALSE", this.getTaskName());
+		this.isEnabled = false;
 	}
 }
