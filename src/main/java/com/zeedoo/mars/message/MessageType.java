@@ -15,6 +15,8 @@ public enum MessageType {
 	
 	INSTANT_SENSOR_DATA_SYNC("insant_sensor_data_sync"),
 	SENSOR_ALIVE_STATUS("sensor_alive_status"),
+	TIMESTAMP_SYNC("timestamp_sync"),
+	REPONSE_TIMESTAMP_SYNC("response_timestamp_sync"),
 	HANDSHAKE("handshake");
 	
 	private String type;

@@ -38,8 +38,10 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		LOGGER.info("Established Connection with Sun SocketAddress={}", ctx.channel().remoteAddress());
-		String sunIpAddress = getRemoteIpAddress(ctx);
-		sunManagementService.onSunConnectionEstablished(sunIpAddress);
+		InetSocketAddress socketAddress = getRemoteSocketAddress(ctx);
+		final String sunIpAddress = socketAddress.getAddress().getHostAddress();
+		final Integer sunPort = socketAddress.getPort();
+		sunManagementService.onSunConnectionEstablished(sunIpAddress, sunPort);
 		LOGGER.info("Initiating DataSync tasks...");
 		initDataSyncTasks(ctx);
 	}
@@ -47,8 +49,10 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		LOGGER.info("Lost Connection with Sun SocketAddress={}", ctx.channel().remoteAddress());
-		String sunIpAddress = getRemoteIpAddress(ctx);
-		sunManagementService.onSunConnectionInterrupted(sunIpAddress);
+		InetSocketAddress socketAddress = getRemoteSocketAddress(ctx);
+		final String sunIpAddress = socketAddress.getAddress().getHostAddress();
+		final Integer sunPort = socketAddress.getPort();
+		sunManagementService.onSunConnectionInterrupted(sunIpAddress, sunPort);
 	}
 
 	/** Message processing **/
@@ -56,9 +60,11 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	public void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
 		Preconditions.checkNotNull("Message should not be null", message);
 		LOGGER.info("Received Message={}",message.toString());
-		String sunIpAddress = getRemoteIpAddress(ctx);
+		InetSocketAddress socketAddress = getRemoteSocketAddress(ctx);
+		final String sunIpAddress = socketAddress.getAddress().getHostAddress();
+		final Integer sunPort = socketAddress.getPort();
 		// We will do a DB call per message here since the load should be relatively light
-		sunManagementService.onSunMessageReceived(message.getSourceId(), sunIpAddress);
+		sunManagementService.onSunMessageReceived(message.getSourceId(), sunIpAddress, sunPort);
 		doProcessMessage(message, ctx);
 	}
 	
@@ -93,10 +99,10 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 		LOGGER.error("Exception thrown", cause);
 	}
 	
-	private String getRemoteIpAddress(ChannelHandlerContext ctx) {
+	private InetSocketAddress getRemoteSocketAddress(ChannelHandlerContext ctx) {
 		Preconditions.checkNotNull("ChannelHandlerContext should not be null", ctx);
 		InetSocketAddress socketAddress = (InetSocketAddress)ctx.channel().remoteAddress();
-		return socketAddress.getAddress().getHostAddress();
+		return socketAddress;
 	}
 	
 	private void doProcessMessage(Message msg, ChannelHandlerContext ctx) throws Exception {

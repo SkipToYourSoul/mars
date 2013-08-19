@@ -16,7 +16,7 @@ public interface SunManagementService {
 	 * @param sunStatus
 	 * @return
 	 */
-	void onSunMessageReceived(String sunId, String ipAddress);
+	void onSunMessageReceived(String sunMacAddress, String ipAddress, Integer port);
 
 	/**
 	 * Business logic when sun connection is established
@@ -26,7 +26,7 @@ public interface SunManagementService {
 	 * @param port
 	 * @return
 	 */
-	void onSunConnectionEstablished(String ipAddress);
+	void onSunConnectionEstablished(String ipAddress, Integer port);
 	
 	/**
 	 * Business logic when sun connection is established
@@ -36,5 +36,5 @@ public interface SunManagementService {
 	 * @param port
 	 * @return
 	 */
-	void onSunConnectionInterrupted(String ipAddress);
+	void onSunConnectionInterrupted(String ipAddress, Integer port);
 }

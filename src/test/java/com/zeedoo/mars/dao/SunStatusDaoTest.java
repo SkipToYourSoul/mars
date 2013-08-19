@@ -24,16 +24,16 @@ public class SunStatusDaoTest extends EntityDaoTest {
 	@Test
 	public void testUpdate() {
 		String fakeId = UUID.randomUUID().toString();
-		SunStatus newStatus = new SunStatus("198.84.173.33", null, DeviceStatus.OFFLINE);
+		SunStatus newStatus = new SunStatus("198.84.173.33", 2222, null, DeviceStatus.OFFLINE);
 		sunStatusDao.update(newStatus);
-		newStatus = sunStatusDao.getStatusByIpAddress("198.84.173.33");
-		Assert.assertEquals(null, newStatus.getSunId());
+		newStatus = sunStatusDao.getStatusBySocketAddress("198.84.173.33", 2222);
+		Assert.assertEquals(null, newStatus.getSunMacAddress());
 		Assert.assertEquals(DeviceStatus.OFFLINE, newStatus.getSunStatus());
 		
-		newStatus.setSunId(fakeId);
+		newStatus.setSunMacAddress(fakeId);
 		newStatus.setSunStatus(DeviceStatus.ONLINE);
 		sunStatusDao.update(newStatus);
-		Assert.assertEquals(fakeId, newStatus.getSunId());
+		Assert.assertEquals(fakeId, newStatus.getSunMacAddress());
 		Assert.assertEquals(DeviceStatus.ONLINE, newStatus.getSunStatus());
 	}
 
@@ -41,13 +41,14 @@ public class SunStatusDaoTest extends EntityDaoTest {
 	public void testInsertAndGet() {
 		String fakeId = UUID.randomUUID().toString();
 		String fakeIpAddress = InetAddresses.fromInteger(new Random().nextInt()).getHostAddress();
-		SunStatus status = new SunStatus(fakeIpAddress, fakeId, DeviceStatus.ONLINE);
+		Integer fakePort = new Random().nextInt(1000);
+		SunStatus status = new SunStatus(fakeIpAddress, fakePort, fakeId, DeviceStatus.ONLINE);
 		SunStatus newStatus = sunStatusDao.insert(status);
 		Assert.assertNotNull(newStatus);
 		// GET the object we just created
-		status = sunStatusDao.getStatusByIpAddress(fakeIpAddress);
+		status = sunStatusDao.getStatusBySocketAddress(fakeIpAddress, fakePort);
 		Assert.assertNotNull(status);
-		Assert.assertEquals(fakeId, status.getSunId());
+		Assert.assertEquals(fakeId, status.getSunMacAddress());
 		// Try getting by sunId
 		status = sunStatusDao.getStatusBySunId(fakeId);
 		Assert.assertNotNull(status);

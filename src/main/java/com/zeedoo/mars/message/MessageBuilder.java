@@ -1,6 +1,7 @@
 package com.zeedoo.mars.message;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class MessageBuilder {
 		Message message = new Message();
 		message.setSource(SOURCE);
 		message.setSourceId(SOURCE_ID);
-		message.setTimestamp(new DateTime().getMillis() / 1000L);
+		message.setTimestamp(DateTime.now(DateTimeZone.UTC).getMillis() / 1000L);
 		return message;
 	}
 }

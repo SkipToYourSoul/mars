@@ -20,10 +20,10 @@ public class SunManagementServiceBean implements SunManagementService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SunManagementServiceBean.class);
 		
 	@Override
-	public void onSunConnectionEstablished(String ipAddress) {
-		SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.ONLINE);
+	public void onSunConnectionEstablished(String ipAddress, Integer port) {
+		SunStatus newStatus = new SunStatus(ipAddress, port, null, DeviceStatus.ONLINE);
 		LOGGER.info("OnSunConnectionEstablisehd: Setting SunStatus={} for ipAddress={}", newStatus, ipAddress);
-		SunStatus existingStatus = sunStatusDao.getStatusByIpAddress(ipAddress);
+		SunStatus existingStatus = sunStatusDao.getStatusBySocketAddress(ipAddress, port);
 		if (existingStatus == null) {
 			LOGGER.info("Could not find SunStatus with ipAddress={}, inserting a new SunStatus", ipAddress);
 			sunStatusDao.insert(newStatus);
@@ -33,11 +33,11 @@ public class SunManagementServiceBean implements SunManagementService {
 	}
 	
 	@Override
-	public void onSunConnectionInterrupted(String ipAddress) {
+	public void onSunConnectionInterrupted(String ipAddress, Integer port) {
 		// Try to get the existing status first
-		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
+		SunStatus status = sunStatusDao.getStatusBySocketAddress(ipAddress, port);
 		if (status == null) {
-			SunStatus newStatus = new SunStatus(ipAddress, null, DeviceStatus.OFFLINE);
+			SunStatus newStatus = new SunStatus(ipAddress, port, null, DeviceStatus.OFFLINE);
 			LOGGER.warn("Could not find existing SunStatus with ipAddress={}, inserting new entry={}", ipAddress, newStatus);
 			sunStatusDao.insert(newStatus);
 		} else {
@@ -49,16 +49,16 @@ public class SunManagementServiceBean implements SunManagementService {
 	}
 	
 	@Override
-	public void onSunMessageReceived(String sunId, String ipAddress) {
+	public void onSunMessageReceived(String sunMacAddress, String ipAddress, Integer port) {
 		// Set sunId for this ip address regardless if we have done it previously or not
-		SunStatus status = sunStatusDao.getStatusByIpAddress(ipAddress);
+		SunStatus status = sunStatusDao.getStatusBySocketAddress(ipAddress, port);
 		if (status == null) {
-			SunStatus newStatus = new SunStatus(ipAddress, sunId, DeviceStatus.ONLINE);
+			SunStatus newStatus = new SunStatus(ipAddress, port, sunMacAddress, DeviceStatus.ONLINE);
 			LOGGER.warn("Could not find existing SunStatus with ipAddress={}, inserting new entry={}", ipAddress, newStatus);
 			sunStatusDao.insert(newStatus);
 		} else {
 			// simply update the device status
-			status.setSunId(sunId);
+			status.setSunMacAddress(sunMacAddress);
 			LOGGER.info("Updating SunStatus={}", status);
 			sunStatusDao.update(status);
 		}
