@@ -27,6 +27,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// Convert to String first
 		String rawJsonString = in.readBytes(in.readableBytes()).toString(CharsetUtil.UTF_8);	
+		LOGGER.info("Received raw JSON String={}", rawJsonString);
 		// De-serialize JSON to Message object
 		Message message = MessageDeserializer.fromJSON(rawJsonString);
 		validateMessage(message);

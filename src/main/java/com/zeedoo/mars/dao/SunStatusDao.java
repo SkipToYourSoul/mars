@@ -19,13 +19,13 @@ public class SunStatusDao extends EntityDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SunStatusDao.class);
 	
-	public SunStatus getStatusBySunId(String sunMacAddress) {
-		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(CoreApiPath.FIND_BY_SUN_MAC_ADDRESS.getPath()).build();
+	public SunStatus getStatusBySunMacAddress(String sunMacAddress) {
+		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(CoreApiPath.FIND_BY_MAC_ADDRESS.getPath()).build();
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.add("sunMacAddress", sunMacAddress);
 		SunStatus result = coreApiClient.getWithQueryParams(uri.toASCIIString(), SunStatus.class, params);
 		if (result == null) {
-			LOGGER.warn("Could not find SunStatus with sunMacAddress={}, returning null", sunMacAddress);
+			LOGGER.debug("Could not find SunStatus with sunMacAddress={}, returning null", sunMacAddress);
 		}
 		return result;
 	}
@@ -35,7 +35,7 @@ public class SunStatusDao extends EntityDao {
 		URI uri = UriBuilder.fromPath(CoreApiPath.SUN_STATUS.getPath()).path(ipAddress + ":" + port).build();
 		SunStatus result = coreApiClient.get(uri.toASCIIString(), SunStatus.class);
 		if (result == null) {
-			LOGGER.warn("Could not find SunStatus with ipAddress={} and port={}, returning null", ipAddress, port);
+			LOGGER.debug("Could not find SunStatus with ipAddress={} and port={}, returning null", ipAddress, port);
 		}
 		return result;
 	}

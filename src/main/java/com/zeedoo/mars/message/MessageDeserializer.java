@@ -21,7 +21,7 @@ import com.zeedoo.mars.message.json.JsonSensorAliveStatus;
 import com.zeedoo.mars.message.json.JsonSensorDataRecord;
 
 /**
- * Deserailizes JSON String to Message object
+ * Deserializes JSON String to Message object
  * @author nzhu
  *
  */

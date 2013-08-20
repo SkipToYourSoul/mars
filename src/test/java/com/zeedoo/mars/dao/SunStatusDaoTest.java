@@ -50,7 +50,7 @@ public class SunStatusDaoTest extends EntityDaoTest {
 		Assert.assertNotNull(status);
 		Assert.assertEquals(fakeId, status.getSunMacAddress());
 		// Try getting by sunId
-		status = sunStatusDao.getStatusBySunId(fakeId);
+		status = sunStatusDao.getStatusBySunMacAddress(fakeId);
 		Assert.assertNotNull(status);
 	}
 }

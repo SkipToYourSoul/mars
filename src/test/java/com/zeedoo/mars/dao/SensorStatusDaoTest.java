@@ -1,5 +1,7 @@
 package com.zeedoo.mars.dao;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,6 +27,12 @@ public class SensorStatusDaoTest extends EntityDaoTest {
 		Assert.assertNotNull(status);
 		Assert.assertEquals("127.0.0.1", status.getSunIpAddress());
 		Assert.assertEquals((Integer)8080, status.getSunIpPort());
+	}
+	
+	@Test
+	public void testFindBy() throws Exception {
+		List<SensorStatus> result = sensorStatusDao.findByMacAddress("ABCDEFGH");
+		Assert.assertEquals(2, result.size());
 	}
 	
 	@Test
