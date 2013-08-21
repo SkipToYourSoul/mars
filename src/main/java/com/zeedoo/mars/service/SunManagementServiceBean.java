@@ -55,6 +55,7 @@ public class SunManagementServiceBean implements SunManagementService {
 			LOGGER.info("Updating SunStatus={}", status);
 			updatedStatus = sunStatusDao.update(status);
 		}
+		// Mark sensors as offline
 		markSensorsOffline(updatedStatus);
 	}
 	
