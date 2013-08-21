@@ -112,7 +112,7 @@ public class MessageDeserializer {
 			return result;
 			
 		} catch (Exception e) {
-			LOGGER.error("An excpetion occured. Payload=" + payload, e);
+			LOGGER.error("An exception occured. Payload=" + payload, e);
 			throw e;
 		}
 		
