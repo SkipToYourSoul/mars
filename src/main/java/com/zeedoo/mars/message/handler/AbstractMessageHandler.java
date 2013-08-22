@@ -23,7 +23,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 		Preconditions.checkArgument(message != null, "Message should not be null.");
 		Optional<Message> replyMessage = doHandleMessage(message, ctx);
 		if (replyMessage.isPresent()) {
-			LOGGER.info("Reply message is present for Message source id={} with timestamp={}", message.getSourceId(), message.getTimestamp());
+			LOGGER.info("Reply message is present for Message sourceId={} with timestamp={}", replyMessage.get().getSourceId(), replyMessage.get().getTimestamp());
 			reply(replyMessage.get(), ctx);
 		}
 	}
