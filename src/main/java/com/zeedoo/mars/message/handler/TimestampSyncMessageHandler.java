@@ -25,7 +25,6 @@ public class TimestampSyncMessageHandler extends AbstractMessageHandler {
 	@Override
 	protected Optional<Message> doHandleMessage(Message message,
 			ChannelHandlerContext ctx) throws Exception {
-		LOGGER.info("Handling Message={}", message);
 		// Since this is just a timestamp sync, we just need to write the correct server timestamp back
 		Message response = MessageBuilder.buildMessage(MessageType.REPONSE_TIMESTAMP_SYNC, Optional.<JsonNode>absent(), null, null);
 		LOGGER.info("Built Message={}", response);

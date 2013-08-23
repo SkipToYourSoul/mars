@@ -27,7 +27,6 @@ public class SensorAliveStatusMessageHandler extends AbstractMessageHandler {
 
 	@Override
 	protected Optional<Message> doHandleMessage(Message message, ChannelHandlerContext ctx) throws Exception {
-		LOGGER.info("Handling Message={}", message);
 		Preconditions.checkArgument(message.getPayload() != null, "Payload should not be null");
 		List<SensorStatus> statusList = MessageDeserializer.deserializeSensorAliveStatusPayload(message.getPayloadAsRawJson());
 		int affectedRecords = 0;

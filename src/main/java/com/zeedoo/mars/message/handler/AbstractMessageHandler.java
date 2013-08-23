@@ -21,6 +21,7 @@ public abstract class AbstractMessageHandler implements MessageHandler {
 	@Override
 	public void handleMessage(Message message, ChannelHandlerContext ctx) throws Exception {
 		Preconditions.checkArgument(message != null, "Message should not be null.");
+		LOGGER.info("Handling Message={}", message);
 		Optional<Message> replyMessage = doHandleMessage(message, ctx);
 		if (replyMessage.isPresent()) {
 			LOGGER.info("Reply message is present for Message sourceId={} with timestamp={}", replyMessage.get().getSourceId(), replyMessage.get().getTimestamp());

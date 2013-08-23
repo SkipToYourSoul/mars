@@ -32,7 +32,6 @@ public class InstantSensorDataSyncMessageHandler extends AbstractMessageHandler 
 
 	@Override
 	protected Optional<Message> doHandleMessage(Message message, ChannelHandlerContext ctx) throws Exception {
-		LOGGER.info("Handling Message={}", message);
 		Preconditions.checkArgument(message.getPayload() != null, "Payload should NOT be null");
 		List<SensorDataRecord> records = MessageDeserializer.deserializeSensorDataSyncPayload(message.getPayloadAsRawJson());
 		LOGGER.info("Message payload successfully deserialized and converted into a list of SensorDataRecords of size={}", records.size());
