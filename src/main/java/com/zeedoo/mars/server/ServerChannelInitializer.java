@@ -4,6 +4,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.util.CharsetUtil;
 
 import org.slf4j.Logger;
@@ -39,6 +41,7 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 		//pipeline.addLast("decoder", DECODER);
 
 		// and then business logic
+		//pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.INFO));
 		pipeline.addLast("messageDecoder", new MessageDecoder());
 		pipeline.addLast("messageEncoder", new MessageEncoder());
 

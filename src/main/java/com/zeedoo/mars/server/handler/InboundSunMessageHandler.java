@@ -31,8 +31,7 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	@Autowired
 	private SunManagementService sunManagementService;
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(InboundSunMessageHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InboundSunMessageHandler.class);
 	
 	/** Connection establishment / interruption **/
 	@Override
@@ -75,7 +74,7 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 	
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt)
-			throws Exception {
+			throws Exception {         
 		if (evt instanceof HandshakeEvent) {
 			HandshakeEvent handShakeEvent = (HandshakeEvent) evt;
 			if (handShakeEvent.getState() == HandshakeState.SUCCESS) {
