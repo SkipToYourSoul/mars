@@ -32,10 +32,10 @@ public class SensorDataSyncTask extends TimedTask {
 	protected void performTask(){
 		try {
 			//Send an outbound message to notify Sun
-			Message message = MessageBuilder.buildMessage(MessageType.TIMED_SENSOR_DATA_SYNC, Optional.<JsonNode>absent(), null, null);
-			LOGGER.info("Built Message={}", message.toString());
-			messageGateway.sendMessage(message, ctx);
-			scheduleNextRun();
+			//Message message = MessageBuilder.buildMessage(MessageType.TIMED_SENSOR_DATA_SYNC, Optional.<JsonNode>absent(), null, null);
+			//LOGGER.info("Built Message={}", message.toString());
+			//messageGateway.sendMessage(message, ctx);
+			//scheduleNextRun();
 			//throw new IllegalStateException("test exception");
 		} catch (Exception e) {
 			//Determine if the exception is recoverable or not

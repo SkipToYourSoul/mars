@@ -50,6 +50,10 @@ public class MessageDeserializer {
 		}
 	}
 	
+	public static ObjectMapper getMapper() {
+		return MAPPER;
+	}
+	
 	/**
 	 * PAYLOAD SPECIFIC methods
 	 */

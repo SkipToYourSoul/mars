@@ -3,6 +3,7 @@ package com.zeedoo.mars.server;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.CharsetUtil;
 
 import java.util.List;
@@ -10,28 +11,39 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
+import com.zeedoo.mars.message.MessageType;
 
 /**
- * Decodes bytestream into {@link com.zeedoo.mars.message.Message} object
+ * Decodes String into {@link com.zeedoo.mars.message.Message} object
  * @author nzhu
  *
  */
-public class MessageDecoder extends ByteToMessageDecoder {
+public class MessageDecoder extends MessageToMessageDecoder<String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDecoder.class);
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		// Convert to String first
-		String rawJsonString = in.readBytes(in.readableBytes()).toString(CharsetUtil.UTF_8);	
-		LOGGER.info("Received raw JSON String={}", rawJsonString);
+	protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
 		// De-serialize JSON to Message object
-		Message message = MessageDeserializer.fromJSON(rawJsonString);
-		validateMessage(message);
-		out.add(message);
+		// If an error occurs here, log the payload and re-throw Exception
+		try {
+		    Message message = MessageDeserializer.fromJSON(msg);
+		    // Log the raw payload here if the message type is not file transfer
+		    if (MessageType.RESPONSE_TIMED_SENSOR_DATA_FILE_TRANSFER != message.getMessageType()) {
+		    	LOGGER.info("Received raw JSON={}", msg);
+		    }
+			validateMessage(message);
+			out.add(message);
+		} catch (Exception e) {
+			LOGGER.error("Error trying to deserialize String={} into Message", msg, e);
+			throw e;
+		}
 	}
 	
 	@Override

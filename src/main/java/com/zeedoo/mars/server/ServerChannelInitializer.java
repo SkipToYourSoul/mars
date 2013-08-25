@@ -3,6 +3,8 @@ package com.zeedoo.mars.server;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -25,6 +27,9 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerChannelInitializer.class);
 		
+	// This integer represents the maximum size of a TCP packet we are allowing
+	private static final int MAX_FRAME_SIZE = 16384;
+	
 	private static final StringDecoder DECODER = new StringDecoder(CharsetUtil.UTF_8);
 	
 	@Autowired
@@ -37,8 +42,8 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 		// DelimiterBasedFrameDecoder is needed if we are sending stream-based
 		// messages. (It will strip delimiters)
 		//pipeline.addLast("framer", new LineBasedFrameDecoder(8192));
-		//pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.nulDelimiter()));
-		//pipeline.addLast("decoder", DECODER);
+		pipeline.addLast("framer", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, Delimiters.nulDelimiter()));
+		pipeline.addLast("decoder", DECODER);
 
 		// and then business logic
 		//pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.INFO));
