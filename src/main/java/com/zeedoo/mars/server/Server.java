@@ -1,6 +1,7 @@
 package com.zeedoo.mars.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -30,6 +31,7 @@ public class Server {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(bossGroup, workerGroup)
 			 .channel(NioServerSocketChannel.class)
+			 .option(ChannelOption.TCP_NODELAY, true)
 			 .childHandler(serverChannelInitializer);
 			b.bind(port).sync().channel().closeFuture().sync();
 		} finally {

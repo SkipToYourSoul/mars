@@ -3,6 +3,8 @@ package com.zeedoo.mars.server;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -37,12 +39,13 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 		// DelimiterBasedFrameDecoder is needed if we are sending stream-based
 		// messages. (It will strip delimiters)
 		//pipeline.addLast("framer", new LineBasedFrameDecoder(8192));
-		//pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.nulDelimiter()));
-		//pipeline.addLast("decoder", DECODER);
+		pipeline.addLast("framer", new DelimiterBasedFrameDecoder(16553, Delimiters.nulDelimiter()));
+		pipeline.addLast("decoder", DECODER);
 
 		// and then business logic
 		//pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.INFO));
-		pipeline.addLast("messageDecoder", new MessageDecoder());
+		//pipeline.addLast("messageDecoder", new MessageDecoder());
+		pipeline.addLast("testHandler", new TestHandler());
 		pipeline.addLast("messageEncoder", new MessageEncoder());
 
 		pipeline.addLast("inboundSunMesageHandler", inboundSunMessageHandler);

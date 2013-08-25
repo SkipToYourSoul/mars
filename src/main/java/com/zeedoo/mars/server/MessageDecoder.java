@@ -5,12 +5,16 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.CharsetUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.sun.jersey.core.util.Base64;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
 
@@ -26,12 +30,15 @@ public class MessageDecoder extends ByteToMessageDecoder {
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// Convert to String first
+		LOGGER.info("capacity = " + in.capacity());
+		LOGGER.info("readable bytes = " + in.readableBytes());
 		String rawJsonString = in.readBytes(in.readableBytes()).toString(CharsetUtil.UTF_8);	
-		LOGGER.info("Received raw JSON String={}", rawJsonString);
+		//LOGGER.info("Received raw JSON String={}", rawJsonString);
+		
 		// De-serialize JSON to Message object
-		Message message = MessageDeserializer.fromJSON(rawJsonString);
-		validateMessage(message);
-		out.add(message);
+		//Message message = MessageDeserializer.fromJSON(rawJsonString);
+		//validateMessage(message);
+		//out.add(message);
 	}
 	
 	@Override
