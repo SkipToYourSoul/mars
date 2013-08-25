@@ -1,19 +1,13 @@
 package com.zeedoo.mars.server;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.util.CharsetUtil;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageDeserializer;
@@ -37,6 +31,8 @@ public class MessageDecoder extends MessageToMessageDecoder<String> {
 		    // Log the raw payload here if the message type is not file transfer
 		    if (MessageType.RESPONSE_TIMED_SENSOR_DATA_FILE_TRANSFER != message.getMessageType()) {
 		    	LOGGER.info("Received raw JSON={}", msg);
+		    } else {
+		    	LOGGER.info("MessageType={} is related to file transfer, skipping logging payload", message.getMessageType());
 		    }
 			validateMessage(message);
 			out.add(message);

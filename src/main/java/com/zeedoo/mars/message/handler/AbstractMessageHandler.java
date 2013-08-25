@@ -12,21 +12,22 @@ import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageGateway;
 
 public abstract class AbstractMessageHandler implements MessageHandler {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMessageHandler.class);
-	
+		
 	@Autowired
 	private MessageGateway messageGateway;
 
 	@Override
 	public void handleMessage(Message message, ChannelHandlerContext ctx) throws Exception {
 		Preconditions.checkArgument(message != null, "Message should not be null.");
-		LOGGER.info("Handling Message={}", message);
+		// logger should reflect the real handler class that's handling the message
+		final Logger currentHandlerLogger = LoggerFactory.getLogger(this.getClass());
+		currentHandlerLogger.info("Handling Message={}", message);
 		Optional<Message> replyMessage = doHandleMessage(message, ctx);
 		if (replyMessage.isPresent()) {
-			LOGGER.info("Reply message is present for Message sourceId={} with timestamp={}", replyMessage.get().getSourceId(), replyMessage.get().getTimestamp());
+			currentHandlerLogger.info("Reply message is present for Message sourceId={} with timestamp={}", replyMessage.get().getSourceId(), replyMessage.get().getTimestamp());
 			reply(replyMessage.get(), ctx);
 		}
+		currentHandlerLogger.info("Successfully handled message={}", message);
 	}
 
 	/**
