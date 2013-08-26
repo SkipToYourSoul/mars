@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Optional;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.MessageBuilder;
+import com.zeedoo.mars.message.MessageResponseCode;
 import com.zeedoo.mars.message.MessageType;
 
 @Component
@@ -26,7 +27,7 @@ public class TimestampSyncMessageHandler extends AbstractMessageHandler {
 	protected Optional<Message> doHandleMessage(Message message,
 			ChannelHandlerContext ctx) throws Exception {
 		// Since this is just a timestamp sync, we just need to write the correct server timestamp back
-		Message response = MessageBuilder.buildMessage(MessageType.REPONSE_TIMESTAMP_SYNC, Optional.<JsonNode>absent(), null, null);
+		Message response = MessageBuilder.buildResponseMessage(MessageType.REPONSE_TIMESTAMP_SYNC, Optional.<JsonNode>absent(), MessageResponseCode.OK.getCode(), null);
 		LOGGER.info("Built Message={}", response);
 		return Optional.fromNullable(response);
 	}

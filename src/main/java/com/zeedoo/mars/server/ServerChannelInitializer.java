@@ -41,15 +41,15 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
 
 		// DelimiterBasedFrameDecoder is needed if we are sending stream-based
 		// messages. (It will strip delimiters)
-		//pipeline.addLast("framer", new LineBasedFrameDecoder(8192));
+		// pipeline.addLast("framer", new LineBasedFrameDecoder(8192));
+		// pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.INFO));
 		pipeline.addLast("framer", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, Delimiters.nulDelimiter()));
 		pipeline.addLast("decoder", DECODER);
 
 		// and then business logic
-		//pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.INFO));
 		pipeline.addLast("messageDecoder", new MessageDecoder());
 		pipeline.addLast("messageEncoder", new MessageEncoder());
 
-		pipeline.addLast("inboundSunMesageHandler", inboundSunMessageHandler);
+		pipeline.addLast("inboundSunMessageHandler", inboundSunMessageHandler);
 	}
 }

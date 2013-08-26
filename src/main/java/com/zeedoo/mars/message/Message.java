@@ -10,6 +10,11 @@ import com.google.common.base.Objects;
  *
  */
 public class Message {
+	
+	/**
+	 * Indicates the unique identifier of this message (32 digit UUID with dashes)
+	 */
+	private String id;
 
 	/**
 	 * Indicates the source (sender) of this message
@@ -46,6 +51,14 @@ public class Message {
 	 */
 	private String errorMessage;
 		
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	public Long getTimestamp() {
 		return timestamp;
 	}
@@ -114,7 +127,7 @@ public class Message {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(source, sourceId, messageType, payload, responseCode, errorMessage);
+		return Objects.hashCode(id, source, sourceId, messageType, payload, responseCode, errorMessage);
 	}
 
 	@Override
@@ -126,14 +139,14 @@ public class Message {
 		if (getClass() != obj.getClass())
 			return false;
 		Message other = (Message) obj;
-		return Objects.equal(this.source, other.source) && Objects.equal(this.sourceId, other.sourceId) && Objects.equal(this.timestamp, other.timestamp)
+		return Objects.equal(this.id, other.id) && Objects.equal(this.source, other.source) && Objects.equal(this.sourceId, other.sourceId) && Objects.equal(this.timestamp, other.timestamp)
 				&& Objects.equal(this.messageType, other.messageType) && Objects.equal(this.payload, other.payload) && Objects.equal(this.responseCode, other.responseCode)
 				&& Objects.equal(this.errorMessage, other.errorMessage);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(Message.class).add("source", source).add("sourceId", sourceId).add("timestamp", timestamp)
+		return Objects.toStringHelper(Message.class).add("id", id).add("source", source).add("sourceId", sourceId).add("timestamp", timestamp)
 				.add("messageType", messageType).add("payload", payload).add("responseCode", responseCode).add("errorMessage", errorMessage).toString();
 	}
 }

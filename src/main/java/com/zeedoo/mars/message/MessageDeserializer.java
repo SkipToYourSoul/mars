@@ -73,6 +73,8 @@ public class MessageDeserializer {
 		       JsonSensorDataRecord jsonRecord = records[i];
 		       String sensorId = jsonRecord.getSensorId();
 		       Long sensorTimestamp = jsonRecord.getSensorTimestamp();
+		       LOGGER.info("sensorTimestamp={}", sensorTimestamp);
+		       LOGGER.info("sensorTimestamp={}", (long)sensorTimestamp);
 		       String sensorValue = jsonRecord.getSensorValue();
 		       // Validate fields
 		       Preconditions.checkArgument(!StringUtils.isEmpty(sensorId), "sensorId is required");
