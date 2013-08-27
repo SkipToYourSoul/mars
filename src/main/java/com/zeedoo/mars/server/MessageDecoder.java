@@ -28,12 +28,8 @@ public class MessageDecoder extends MessageToMessageDecoder<String> {
 		// If an error occurs here, log the payload and re-throw Exception
 		try {
 		    Message message = MessageDeserializer.fromJSON(msg);
-		    // Log the raw payload here if the message type is not file transfer
-		    if (MessageType.RESPONSE_TIMED_SENSOR_DATA_FILE_TRANSFER != message.getMessageType()) {
-		    	LOGGER.info("Received raw JSON={}", msg);
-		    } else {
-		    	LOGGER.info("MessageType={} is related to file transfer, skipping logging payload", message.getMessageType());
-		    }
+		    // Log the raw payload here
+		    LOGGER.info("Received raw JSON={}", msg);
 			validateMessage(message);
 			out.add(message);
 		} catch (Exception e) {
