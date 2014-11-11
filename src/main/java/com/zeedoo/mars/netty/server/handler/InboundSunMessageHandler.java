@@ -1,4 +1,4 @@
-package com.zeedoo.mars.server.handler;
+package com.zeedoo.mars.netty.server.handler;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,23 +13,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Preconditions;
+import com.zeedoo.mars.error.MarsErrorHandler;
 import com.zeedoo.mars.event.HandshakeEvent;
 import com.zeedoo.mars.event.HandshakeState;
 import com.zeedoo.mars.message.Message;
 import com.zeedoo.mars.message.handler.MessageHandler;
 import com.zeedoo.mars.message.handler.MessageHandlerConfiguration;
 import com.zeedoo.mars.service.SunManagementService;
-import com.zeedoo.mars.task.SensorDataSyncTask;
+import com.zeedoo.mars.task.TaskManager;
 
 @Sharable
 @Component
 public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Message> {
 	
 	@Autowired
+	private MarsErrorHandler marsErrorHandler;
+	
+	@Autowired
 	private MessageHandlerConfiguration messageHandlerConfiguration;
 	
 	@Autowired
 	private SunManagementService sunManagementService;
+	
+	@Autowired
+	private TaskManager taskManager;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InboundSunMessageHandler.class);
 	
@@ -41,7 +48,7 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 		final String sunIpAddress = socketAddress.getAddress().getHostAddress();
 		final Integer sunPort = socketAddress.getPort();
 		sunManagementService.onSunConnectionEstablished(sunIpAddress, sunPort);
-		LOGGER.info("Initiating DataSync tasks...");
+		LOGGER.info("Initiating DataSync tasks for Sun RemoteAddress={}", ctx.channel().remoteAddress());
 		initDataSyncTasks(ctx);
 	}
 
@@ -87,15 +94,10 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 		}
 	}
 	
-	/** Error handling 
-	 *  The overall principle is as a service, we shouldn't close the connection unless something terrible has happened
-	 *  Service should be error-tolerant, and it's up to client's responsibility to retry
-	 *  However, if the error occurred when we were trying to reply back to Sun, we should retry a few number of times 
-	 */
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		LOGGER.error("Exception thrown", cause);
+		marsErrorHandler.handleError(ctx, cause);
 	}
 	
 	private InetSocketAddress getRemoteSocketAddress(ChannelHandlerContext ctx) {
@@ -112,6 +114,6 @@ public class InboundSunMessageHandler extends SimpleChannelInboundHandler<Messag
 
 	private void initDataSyncTasks(ChannelHandlerContext ctx) {
 		ctx.channel().eventLoop()
-				.schedule(new SensorDataSyncTask(ctx), 10, TimeUnit.SECONDS);
+				.schedule(taskManager.createNewSensorDataSyncTask(ctx), 10, TimeUnit.SECONDS);
 	}
 }

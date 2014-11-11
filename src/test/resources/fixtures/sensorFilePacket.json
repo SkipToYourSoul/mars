@@ -1,0 +1,1 @@
+{"id":"34a991eb-1fc9-4200-ae8b-00de54bf9800","messageType":"sensor_file_packet","payload":{"CRC16":0,"data":"reallyLongTestData","packetNumber":2,"packetSize":305,"sensorId":"345678"},"source":"Sun","sourceId":"00-0C-43-A5-98-67","timestamp":1382168465.0}

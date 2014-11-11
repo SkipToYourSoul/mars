@@ -19,14 +19,14 @@ public enum MessageType {
 	/**
 	 *  File transfer related
 	 */
-	GET_SENSOR_DATA_SIZE("get_sensor_data_size"),
-	RESPONSE_GET_SENSOR_DATA_SIZE("response_get_sensor_data_size"),
+	GET_SENSOR_FILEDATA_SYNC_INFO("get_sensor_filedata_sync_info"),
+	RESPONSE_GET_SENSOR_DATA_SYNC_INFO("response_get_sensor_filedata_sync_info"),
 	
-	SENSOR_DATA_TRANSFER("sensor_data_transfer"),
-	RESPONSE_SENSOR_DATA_TRANSFER("response_sensor_data_transfer"),
+	SENSOR_FILEDATA_TRANSFER("sensor_filedata_transfer"),
+	RESPONSE_SENSOR_FILEDATA_TRANSFER("response_sensor_filedata_transfer"),
 	
 	SENSOR_FILE_INFO("sensor_file_info"),
-	RESPONSE_SENSOR_FILE("response_sensor_file_info"),
+	RESPONSE_SENSOR_FILE_INFO("response_sensor_file_info"),
 	
 	SENSOR_FILE_PACKET("sensor_file_packet"),
 	RESPONSE_FILE_PACKET("response_sensor_file_packet");

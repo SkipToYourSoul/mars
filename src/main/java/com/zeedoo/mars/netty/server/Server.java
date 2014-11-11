@@ -1,4 +1,4 @@
-package com.zeedoo.mars.server;
+package com.zeedoo.mars.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
@@ -9,6 +9,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.zeedoo.mars.task.SensorDataSyncTask;
+import com.zeedoo.mars.task.TaskManager;
 
 @Component
 public class Server {

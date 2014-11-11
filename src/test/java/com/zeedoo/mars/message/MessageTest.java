@@ -3,10 +3,14 @@ package com.zeedoo.mars.message;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -16,6 +20,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.commons.domain.SensorStatus;
+import com.zeedoo.commons.domain.payload.SensorFilePacket;
 import com.zeedoo.mars.message.json.JsonSensorDataRecord;
 
 
@@ -47,6 +52,7 @@ public class MessageTest {
 		// Test that we can cast this Message to InstantSensorDataSyncMessage
 		assertThat(message.getMessageType(), is(MessageType.INSTANT_SENSOR_DATA_SYNC));
 		assertThat(records.size(), is(2));
+		System.out.println(DateTime.now(DateTimeZone.UTC).getMillis() / 1000L);
 	}
 		
 	@Test
@@ -55,6 +61,12 @@ public class MessageTest {
 		List<SensorStatus> statusList = MessageDeserializer.deserializeSensorAliveStatusPayload(message.getPayloadAsRawJson());
 		assertThat(message.getMessageType(), is(MessageType.SENSOR_ALIVE_STATUS));
 		assertThat(statusList.size(), is(2));
+	}
+	
+	@Test
+	public void deserialize_SensorFilePacketMessage() throws Exception {
+		Message message = fromJson(fixture("fixtures/sensorFilePacket.json"), Message.class);
+		assertThat(message.getMessageType(), is(MessageType.SENSOR_FILE_PACKET));
 	}
 	
 	/** 

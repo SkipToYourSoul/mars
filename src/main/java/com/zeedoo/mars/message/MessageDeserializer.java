@@ -1,6 +1,5 @@
 package com.zeedoo.mars.message;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.zeedoo.commons.domain.DeviceStatus;
 import com.zeedoo.commons.domain.SensorDataRecord;
 import com.zeedoo.commons.domain.SensorStatus;
+import com.zeedoo.commons.domain.payload.SensorDataSyncInfo;
+import com.zeedoo.commons.domain.payload.SensorFileInfo;
+import com.zeedoo.commons.domain.payload.SensorFilePacket;
 import com.zeedoo.mars.message.json.JsonSensorAliveStatus;
 import com.zeedoo.mars.message.json.JsonSensorDataRecord;
 
@@ -38,6 +38,13 @@ public class MessageDeserializer {
 	public static Message fromJSON(String json) throws Exception {
 		try {
 			return MAPPER.readValue(json, Message.class);
+		} catch (Exception e) {
+			LOGGER.error("Error deserializing incoming JSON to Message. JSON:{}", json);
+			// Propagate the exception here so the error handler will handle it
+			throw e;
+		}
+		/* try {
+			return MAPPER.readValue(json, Message.class);
 		} catch (JsonParseException e) {
 			LOGGER.error("Unable to parse Incoming JSON=" + json + ". Check JSON data integrity", e);
             throw e;
@@ -47,7 +54,7 @@ public class MessageDeserializer {
 		} catch (IOException e) {
 			LOGGER.error("An IOException occured", e);
             throw e;
-		}
+		} */
 	}
 	
 	public static ObjectMapper getMapper() {
@@ -59,10 +66,7 @@ public class MessageDeserializer {
 	 */
 	
 	/**
-	 * Deserializes payload that contains sensor data records
-	 * @param payload
-	 * @return
-	 * @throws Exception
+	 * instant_sensor_data_sync payload
 	 */
 	public static List<SensorDataRecord> deserializeSensorDataSyncPayload(String payload) throws Exception {
 		Preconditions.checkArgument(payload != null, "Payload should NOT be null");
@@ -73,24 +77,26 @@ public class MessageDeserializer {
 		       JsonSensorDataRecord jsonRecord = records[i];
 		       String sensorId = jsonRecord.getSensorId();
 		       Long sensorTimestamp = jsonRecord.getSensorTimestamp();
-		       LOGGER.info("sensorTimestamp={}", sensorTimestamp);
-		       LOGGER.info("sensorTimestamp={}", (long)sensorTimestamp);
 		       String sensorValue = jsonRecord.getSensorValue();
 		       // Validate fields
 		       Preconditions.checkArgument(!StringUtils.isEmpty(sensorId), "sensorId is required");
 		       Preconditions.checkArgument(!StringUtils.isEmpty(sensorValue), "sensorValue is required");
 		       Preconditions.checkArgument(sensorTimestamp != null, "sensorTimestmap is required");
-			   SensorDataRecord record = new SensorDataRecord(sensorId, new DateTime(sensorTimestamp), sensorValue);
+		       //FIXME: Use timestamp as-is when Sun sends in millisecond based timestamp
+			   SensorDataRecord record = new SensorDataRecord(sensorId, sensorTimestamp * 1000, sensorValue);
 			   result.add(record);
 		   }
 		   return result;
 		   
 		} catch (Exception e) {
-			LOGGER.error("An exception occured. Payload=" + payload, e);
+			LOGGER.error("Error deserializing payload to list of SensorDataRecord. Payload:{}", payload);
 			throw e;
 		}
 	}
 	
+	/**
+	 * sensor_alive_status payload
+	 */
 	public static List<SensorStatus> deserializeSensorAliveStatusPayload(String payload) throws Exception {
 		Preconditions.checkArgument(payload != null, "Payload should NOT be null");
 		try {
@@ -118,9 +124,50 @@ public class MessageDeserializer {
 			return result;
 			
 		} catch (Exception e) {
-			LOGGER.error("An exception occured. Payload=" + payload, e);
+			LOGGER.error("Error deserializing payload to list of SensorStatus. Payload:{}", payload);
+			throw e;
+		}		
+	}
+	
+	/**
+	 * sensor file info payload
+	 */
+	public static SensorFileInfo deserializeSensorFileInfoPayload(String payload) throws Exception {
+		Preconditions.checkArgument(payload != null, "Payload should not be null");
+		try {
+			SensorFileInfo sensorFileInfo = MAPPER.readValue(payload, SensorFileInfo.class);
+			return sensorFileInfo;
+		} catch (Exception e) {
+			LOGGER.error("Error deserializing payload to SensorFileInfo. Payload:{}", payload);
 			throw e;
 		}
-		
+	}
+	
+	/**
+	 * sensor file packet payload
+	 */
+	public static SensorFilePacket deserializeSensorFilePacket(String payload) throws Exception {
+		Preconditions.checkArgument(payload != null, "Payload should not be null");
+		try {
+			SensorFilePacket sensorFilePacket = MAPPER.readValue(payload, SensorFilePacket.class);
+			return sensorFilePacket;
+		} catch (Exception e) {
+			LOGGER.error("Error deserializing payload to SensorFilePacket. Payload:{}", payload);
+			throw e;
+		}
+	}
+	
+	/**
+	 * sensor_data_sync_info payload
+	 */
+	public static SensorDataSyncInfo deserializeSensorDataSyncInfo(String payload) throws Exception {
+		Preconditions.checkArgument(payload != null, "Payload should not be null");
+		try {
+			SensorDataSyncInfo sensorDataSyncInfo = MAPPER.readValue(payload, SensorDataSyncInfo.class);
+			return sensorDataSyncInfo;
+		} catch (Exception e) {
+			LOGGER.error("Error deserializing payload to SensorDataSyncInfo. Payload:{}", payload);
+			throw e;
+		}
 	}
 }

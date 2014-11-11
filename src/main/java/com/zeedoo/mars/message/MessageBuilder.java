@@ -17,13 +17,16 @@ public class MessageBuilder {
 	private static final String SOURCE_ID = "Mars";
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageBuilder.class);
 	
-	private MessageBuilder () {
-		//hidden on purpose
+	private MessageBuilder() {
+		//Hidden on purpose
+	}
+	
+	public static Message buildMessage(MessageType type) {
+		return buildMessage(type, Optional.<JsonNode>absent());
 	}
 	
 	public static Message buildMessage(MessageType type, Optional<JsonNode> payload) {
-		Message message = buildBasicMessage();
-		message.setMessageType(type);
+		Message message = buildBasicMessage(type);
 		if (payload.isPresent()) {
 			message.setPayload(payload.get());
 		}
@@ -31,21 +34,36 @@ public class MessageBuilder {
 		return message;
 	}
 	
-	public static Message buildResponseMessage(MessageType type, Optional<JsonNode> payload, Integer responseCode, String errorMessage) {
+	public static Message buildResponseMessage(MessageType type, String responseCode, String errorMessage) {
+		Message message = buildMessage(type);
+		message.setResponseCode(responseCode);
+		message.setErrorMessage(errorMessage);
+		return message;
+	}
+	
+	public static Message buildResponseMessage(MessageType type, Optional<JsonNode> payload, String responseCode, String errorMessage) {
 		Preconditions.checkArgument(responseCode != null, "responseCode should not be null");
-		Message message = buildBasicMessage();
-		message.setMessageType(type);
+		Message message = buildResponseMessage(type, responseCode, errorMessage);
 		if (payload.isPresent()) {
 			message.setPayload(payload.get());
 		}
-		message.setErrorMessage(errorMessage);
-		message.setResponseCode(String.valueOf(responseCode));
 		LOGGER.debug("Built message={}", message);
 		return message;
 	}
-
-	private static Message buildBasicMessage() {
+	
+    /**
+	 * Builds an error response in case of an exception
+	 * @return
+	 */
+	public static Message buildEmptyPayloadResponseMessage(MessageType messageType, MessageResponseCode responseCode) {
+		Message responseMessage = MessageBuilder.buildResponseMessage(messageType, Optional.<JsonNode>absent(), 
+				responseCode.getCode(), null);
+		return responseMessage;
+	}
+	
+	private static Message buildBasicMessage(MessageType type) {
 		Message message = new Message();
+		message.setMessageType(type);
 		message.setId(UUID.randomUUID().toString());
 		message.setSource(SOURCE);
 		message.setSourceId(SOURCE_ID);

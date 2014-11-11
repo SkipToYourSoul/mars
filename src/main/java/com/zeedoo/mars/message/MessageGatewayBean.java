@@ -13,7 +13,7 @@ public class MessageGatewayBean implements MessageGateway {
 
 	@Override
 	public void sendMessage(Message message, ChannelHandlerContext ctx) {
-		LOGGER.info("Sending Outbound Message={}", message);
+		LOGGER.info("Sending Outbound Message={}, messageId={}", message, message.getId());
 		ctx.writeAndFlush(message);
 	}
 

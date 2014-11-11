@@ -10,19 +10,30 @@
   </appender> 
   
   <appender name="File" class="org.apache.log4j.RollingFileAppender"> 
-    <param name="file" value="stdout.log"/>
-    <param name="MaxFileSize" value="100KB"/>
-    <!-- Keep one backup file -->
-    <param name="MaxBackupIndex" value="1"/>
+    <param name="file" value="logs/stdout.log"/>
+    <param name="MaxFileSize" value="2048KB"/>
+    <!-- Keep five backup files -->
+    <param name="MaxBackupIndex" value="5"/>
     <layout class="org.apache.log4j.PatternLayout"> 
       <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %m%n"/> 
     </layout> 
   </appender> 
   
+  <!-- File Transfer -->
+  <appender name="FileTransfer" class="org.apache.log4j.RollingFileAppender">
+     <param name="file" value="logs/filetransfer.log"/>
+     <param name="MaxFileSize" value="2048KB"/>
+     <!-- Keep five backup files -->
+     <param name="MaxBackupIndex" value="5"/>
+     <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %m%n"/>
+     </layout>
+  </appender>
+  
   <appender name="Error" class="org.apache.log4j.RollingFileAppender"> 
-    <param name="file" value="errors.log"/>
+    <param name="file" value="logs/errors.log"/>
     <param name="threshold" value="ERROR" />
-    <param name="MaxFileSize" value="100KB"/>
+    <param name="MaxFileSize" value="2048KB"/>
     <!-- Keep one backup file -->
     <param name="MaxBackupIndex" value="1"/>
     <layout class="org.apache.log4j.PatternLayout"> 
@@ -30,8 +41,12 @@
     </layout> 
   </appender>
   
+  <logger name="FileTransferLogger">
+     <!-- Will log to stdout due to root logger settings -->
+     <appender-ref ref="FileTransfer" />
+  </logger>
+  
   <root> 
-    <!-- Set root logger level to DEBUG and its only appender to A1 -->
     <priority value ="INFO" /> 
     <appender-ref ref="Stdout" />
     <appender-ref ref="File" />  

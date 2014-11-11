@@ -32,7 +32,7 @@
 				<entry key="Server:name=HttpAdaptor">
 					<bean class="mx4j.tools.adaptor.http.HttpAdaptor"
 						destroy-method="stop">
-						<property name="port" value="9081" />
+						<property name="port" value="9080" />
 						<property name="host" value="0.0.0.0" />
 						<property name="processor">
 							<bean class="mx4j.tools.adaptor.http.XSLTProcessor" />

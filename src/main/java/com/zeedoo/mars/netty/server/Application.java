@@ -1,4 +1,4 @@
-package com.zeedoo.mars.server;
+package com.zeedoo.mars.netty.server;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -20,4 +20,5 @@ public class Application {
 		server.run();
 	}
 
+	
 }

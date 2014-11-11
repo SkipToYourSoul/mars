@@ -3,6 +3,7 @@ package com.zeedoo.mars.message;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Objects;
+import com.zeedoo.commons.domain.payload.SensorFilePacket;
 
 /**
  * Simple POJO that represents a cross-device Message
@@ -146,7 +147,27 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(Message.class).add("id", id).add("source", source).add("sourceId", sourceId).add("timestamp", timestamp)
-				.add("messageType", messageType).add("payload", payload).add("responseCode", responseCode).add("errorMessage", errorMessage).toString();
+		Object payloadAsString = payload;
+		if (this.messageType == MessageType.SENSOR_FILE_PACKET) {
+			payloadAsString = getSensorFilePacketString();
+		}
+		return Objects.toStringHelper(Message.class).add("messageType", messageType).add("id", id).add("source", source).add("sourceId", sourceId).add("timestamp", timestamp)
+				.add("payload", payloadAsString).add("responseCode", responseCode).add("errorMessage", errorMessage).toString();
+	}
+
+	private Object getSensorFilePacketString() {
+		Object payloadAsString;
+		JsonNode jsonPayload = (JsonNode)payload;
+		String crc32 = jsonPayload.get("CRC32").asText();
+		Integer packetNumber = jsonPayload.get("packetNumber").asInt();
+		Integer packetSize = jsonPayload.get("packetSize").asInt();
+		String sensorId = jsonPayload.get("sensorId").asText();
+		String data = jsonPayload.get("data").asText();
+		if (data != null && data.length() > 10) {
+			data = data.substring(0, 10) + "...";
+		}
+		payloadAsString = Objects.toStringHelper(SensorFilePacket.class).add("packetNumber", packetNumber).add("packetSize", packetSize)
+				.add("crc32", crc32).add("data", data).add("sensorId", sensorId).toString();
+		return payloadAsString;
 	}
 }
